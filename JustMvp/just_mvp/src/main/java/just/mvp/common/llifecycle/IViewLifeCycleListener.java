@@ -1,4 +1,4 @@
-package just.mvp.common;
+package just.mvp.common.llifecycle;
 
 public interface IViewLifeCycleListener {
 

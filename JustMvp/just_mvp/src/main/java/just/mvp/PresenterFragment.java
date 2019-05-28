@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import just.mvp.base.IPresenter;
 import just.mvp.base.IView;
-import just.mvp.common.Presenters;
+import just.mvp.common.viewmodel.Presenters;
 
 public class PresenterFragment<P extends IPresenter> extends Fragment implements IView {
     /**

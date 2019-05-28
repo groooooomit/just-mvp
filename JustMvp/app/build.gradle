@@ -41,4 +41,7 @@ dependencies {
 
     /* import just-mvp */
     implementation project(path: ':just_mvp')
+
+    /* 内存泄漏检查 */
+    implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
 }

@@ -10,6 +10,16 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+        login.setOnClickListener {
+            val usernameStr = username.text?.toString()
+            val passwordStr = password.text?.toString()
+            presenter.login(usernameStr, passwordStr)
+        }
+    }
+
     override fun showLoginStart() {
         loading.visibility = View.VISIBLE
         username.isEnabled = false
@@ -29,14 +39,4 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
         finish()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        login.setOnClickListener {
-            val usernameStr = username.text?.toString()
-            val passwordStr = password.text?.toString()
-            presenter.login(usernameStr, passwordStr)
-        }
-    }
 }

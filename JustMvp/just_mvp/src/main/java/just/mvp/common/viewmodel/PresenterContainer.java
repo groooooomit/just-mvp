@@ -1,4 +1,4 @@
-package just.mvp.common;
+package just.mvp.common.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 import just.mvp.base.IPresenter;
