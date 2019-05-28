@@ -5,6 +5,10 @@ import just.mvp.base.ProxyViewPresenter;
 import just.mvp.common.RunOnUiHelper;
 
 public class BasePresenter<V extends IView> extends ProxyViewPresenter<V> {
+
+	/**
+	 * UI Handler 工具
+	 */
 	private final RunOnUiHelper mRunOnUiHelper = new RunOnUiHelper();
 
 	/**
