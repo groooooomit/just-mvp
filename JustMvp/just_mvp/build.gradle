@@ -3,7 +3,6 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
 
-
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
@@ -11,7 +10,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -38,8 +36,39 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
     /* import for use {@link androidx.lifecycle.DefaultLifecycleObserver} */
-    api 'androidx.lifecycle:lifecycle-common-java8:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.0.0'
 
     /* import for use {@link androidx.lifecycle.ViewModelProviders} */
-    api 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 }
+
+// step 3： 配置 pom 和 bintray 信息
+ext {
+    gitUrl = 'https://github.com/groooooomit/just-mvp.git'
+    siteUrl = 'https://github.com/groooooomit/just-mvp'
+    //
+    pom_groupId = 'com.bfu'
+    pom_artifactId = 'just-mvp'
+    pom_name = 'just-mvp'
+    pom_description = 'A mvp library for android.'
+    pom_licenseName = 'The Apache Software License, Version 2.0'
+    pom_licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    pom_developerId = 'groooooomit'
+    pom_developerName = 'groooooomit'
+    pom_developerEmail = 'fubofubo@hotmail.com'
+    pom_version = '1.0.0'
+    //
+    bintray_repo = 'just' // your repo name
+    bintray_name = 'mvp' // has to be same as your library module name
+    bintray_desc = '> A mvp library for android.'
+    bintray_licenses = ["Apache-2.0"]
+}
+
+// step 4: 引入 gradle
+apply from: 'https://raw.githubusercontent.com/groooooomit/jcenter/master/jcenter-maven-install.gradle'
+apply from: 'https://raw.githubusercontent.com/groooooomit/jcenter/master/jcenter-bintray-config.gradle'
+
+// step 5： 执行 gradle 命令
+// gradlew clean build install bintrayUpload
+
+// Thanks： http://blogs.quovantis.com/how-to-publish-android-library-on-bintrayjcenter/
