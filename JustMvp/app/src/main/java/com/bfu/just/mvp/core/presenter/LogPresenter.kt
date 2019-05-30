@@ -4,10 +4,9 @@ import android.util.Log
 import just.mvp.BasePresenter
 import just.mvp.base.IView
 
+const val TAG = "JustPresenter"
+
 open class LogPresenter<V : IView> : BasePresenter<V>() {
-    companion object {
-        const val TAG = "JustPresenter"
-    }
 
     override fun afterViewCreate() {
         Log.d(TAG, "${hashCode()} >>>> afterViewCreate")
