@@ -4,7 +4,7 @@ import android.util.Log
 import just.mvp.BasePresenter
 import just.mvp.base.IView
 
-const val TAG = "JustPresenter"
+private const val TAG = "JustPresenter"
 
 open class LogPresenter<V : IView> : BasePresenter<V>() {
 
