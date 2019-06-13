@@ -39,9 +39,9 @@ public class BasePresenter<V extends IView> extends ProxyViewPresenter<V> {
     }
 
     /**
-     * 清空 mHandler 发出的任务
+     * 清空 mRunOnUiHelper 发出的任务
      */
-    protected final void clearAllRuns() {
+    protected final void clearAllUiRuns() {
         mRunOnUiHelper.clearAllRuns();
     }
 
