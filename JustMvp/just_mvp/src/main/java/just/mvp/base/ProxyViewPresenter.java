@@ -32,6 +32,8 @@ public class ProxyViewPresenter<V extends IView> extends LifeCyclePresenter<V> {
     private static final class ViewActiveInvocationHandler implements InvocationHandler {
 
         private static final String METHOD_IS_ACTIVE = "isActive";
+        private static final String METHOD_GET_CONTEXT = "getContext";
+
         private final WeakReference<IView> targetViewRef;
 
         private ViewActiveInvocationHandler(IView target) {
@@ -40,19 +42,27 @@ public class ProxyViewPresenter<V extends IView> extends LifeCyclePresenter<V> {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
             /* 获取 target view. */
             final IView targetView = targetViewRef.get();
             final boolean isTargetViewActive = null != targetView && targetView.isActive();
 
             /* 判断调用的方法是不是 isActive. */
             if (METHOD_IS_ACTIVE.equals(method.getName())) {
+
                 return isTargetViewActive;
+            } else if (METHOD_GET_CONTEXT.equals(method.getName())) {
+
+                /* 判断调用的方法是不是 getContext. */
+                return method.invoke(targetView, args);
             } else {
                 /* 处理其他方法. */
                 if (isTargetViewActive) {
+
                     /* 如果状态为 active，那么调用后续方法. */
                     return method.invoke(targetView, args);
                 } else {
+
                     /* [注意] 基本数据类型是不接受 null 值的. */
                     return null;
                 }

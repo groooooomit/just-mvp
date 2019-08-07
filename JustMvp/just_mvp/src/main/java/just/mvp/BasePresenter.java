@@ -1,5 +1,6 @@
 package just.mvp;
 
+import androidx.annotation.CallSuper;
 import just.mvp.base.IView;
 import just.mvp.base.ProxyViewPresenter;
 import just.mvp.common.RunOnUiHelper;
@@ -45,9 +46,10 @@ public class BasePresenter<V extends IView> extends ProxyViewPresenter<V> {
         mRunOnUiHelper.clearAllRuns();
     }
 
+    @CallSuper
     @Override
     public void onCleared() {
-        super.onCleared();
         mRunOnUiHelper.release();
+        super.onCleared();
     }
 }
