@@ -40,7 +40,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     /* import just-mvp */
-//    implementation project(path: ':just_mvp')
+    implementation project(path: ':just_mvp')
 
     /* 内存泄漏检查 */
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
