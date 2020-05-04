@@ -1,44 +1,66 @@
 package com.bfu.just.mvp.core.presenter
 
 import android.util.Log
+import androidx.annotation.CallSuper
 import just.mvp.BasePresenter
 import just.mvp.base.IView
 
-private const val TAG = "JustPresenter"
-
 open class LogPresenter<V : IView> : BasePresenter<V>() {
 
+    private val tag = this::class.simpleName
+
+    @CallSuper
     override fun afterViewCreate() {
-        Log.d(TAG, "${hashCode()} >>>> afterViewCreate")
+        Log.d(tag, "${hashCode()} >>>> afterViewCreate")
     }
 
+    @CallSuper
     override fun afterViewStart() {
-        Log.d(TAG, "${hashCode()} >>>> afterViewStart")
+        Log.d(tag, "${hashCode()} >>>> afterViewStart")
     }
 
+    @CallSuper
     override fun afterViewResume() {
-        Log.d(TAG, "${hashCode()} >>>> afterViewResume")
+        Log.d(tag, "${hashCode()} >>>> afterViewResume")
     }
 
+    @CallSuper
     override fun beforeViewPause() {
-        Log.d(TAG, "${hashCode()} >>>> beforeViewPause")
+        Log.d(tag, "${hashCode()} >>>> beforeViewPause")
     }
 
+    @CallSuper
     override fun beforeViewStop() {
-        Log.d(TAG, "${hashCode()} >>>> beforeViewStop")
+        Log.d(tag, "${hashCode()} >>>> beforeViewStop")
     }
 
+    @CallSuper
     override fun beforeViewDestroy() {
-        Log.d(TAG, "${hashCode()} >>>> beforeViewDestroy")
+        Log.d(tag, "${hashCode()} >>>> beforeViewDestroy")
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.d(TAG, "${hashCode()} >>>> onCleared")
+    @CallSuper
+    override fun onInitialize() {
+        Log.d(tag, "${hashCode()} >>>> onInitialize")
     }
 
-    override fun attachView(view: V) {
-        super.attachView(view)
-        Log.d(TAG, "${hashCode()} >>>> attachView")
+    @CallSuper
+    override fun onRelease() {
+        super.onRelease()
+        Log.d(tag, "${hashCode()} >>>> onRelease")
+
+    }
+
+    @CallSuper
+    override fun onAttachView(view: V) {
+        super.onAttachView(view)
+        Log.d(tag, "${hashCode()} >>>> onAttachView")
+    }
+
+    @CallSuper
+    override fun onDetachView(view: V) {
+        super.onDetachView(view)
+        Log.d(tag, "${hashCode()} >>>> onDetachView")
+
     }
 }

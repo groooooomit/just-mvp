@@ -1,29 +1,74 @@
 package just.mvp.base;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelStoreOwner;
+
+import just.mvp.viewdata.ViewData;
 
 /**
- * View 中只定义 Presenter 需要用到的方法
+ * View 用来承载界面更新和接收用户输入，这里定义 View 的通用方法。
+ * <p>
+ * IView 继承自 {@link LifecycleOwner}，方便在 Presenter 中对 View 添加生命周期监听器
+ * <p>
+ * IView 继承自 {@link ViewModelStoreOwner}，因为在本框架中 Presenter 是由 ViewModel 承载的
  */
-public interface IView extends LifecycleOwner {
+public interface IView extends LifecycleOwner, ViewModelStoreOwner {
 
-	/**
-	 * 获取 View 的 Context 对象，当 {@link IView#isActive()} 为 false 时， Context 为 null.
-	 */
-	@Nullable
-	Context getContext();
+    /**
+     * 获取 View 的 Context 对象
+     */
+    @Nullable
+    Context getContext();
 
-	/**
-	 * 判断 View 是否活跃
-	 */
-	boolean isActive();
+    /**
+     * 获取 view 的 activity
+     */
+    @Nullable
+    FragmentActivity getActivity();
 
-	/**
-	 * 显示消息
-	 */
-	void showMessage(@NonNull String msg);
+    /**
+     * 获取当前 View 持有的数据，Activity 的数据来源于 getIntent()，Fragment 的数据来源于 getArguments()
+     */
+    @NonNull
+    ViewData getData();
+
+    /**
+     * 判断 View 是否活跃
+     */
+    boolean isActive();
+
+    ///////////////////////////////////////////////////////////////////////////
+    // 以下是常用的界面弹出消息
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 显示 toast 消息
+     */
+    void toast(@NonNull String msg);
+
+    /**
+     * 显示一个长的 toast 消息
+     */
+    void toastLong(@NonNull String msg);
+
+    /**
+     * 显示 snack 消息，自动消失
+     */
+    void snack(@NonNull String msg);
+
+    /**
+     * 显示一个长的 snack 消息，自动消失
+     */
+    void snackLong(@NonNull String msg);
+
+    /**
+     * 显示 snack 消息，点击才消失
+     */
+    void snackIndefinite(@NonNull String msg);
 
 }

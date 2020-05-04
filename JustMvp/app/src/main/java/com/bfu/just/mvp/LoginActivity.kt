@@ -14,6 +14,7 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         login.setOnClickListener {
+            /* 用户名： user， 密码： 123456 */
             val usernameStr = username.text?.toString()
             val passwordStr = password.text?.toString()
             presenter.login(usernameStr, passwordStr)
@@ -34,9 +35,12 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
         login.isEnabled = true
     }
 
-    override fun goMainPage() {
-        startActivity(Intent(this, MainActivity::class.java))
+    override fun goMainPage(token: String) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("token", token)
+        startActivity(intent)
         finish()
     }
+
 
 }

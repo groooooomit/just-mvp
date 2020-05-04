@@ -11,11 +11,12 @@ interface LoginContract {
 
         fun showLoginEnd()
 
-        fun goMainPage()
+        fun goMainPage(token: String)
     }
 
     interface Presenter : IPresenter<View> {
 
         fun login(username: String?, password: String?)
     }
+
 }

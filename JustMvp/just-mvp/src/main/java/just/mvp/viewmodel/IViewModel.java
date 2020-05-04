@@ -1,4 +1,8 @@
-package just.mvp.common.viewmodel;
+package just.mvp.viewmodel;
+
+import android.app.Application;
+
+import androidx.annotation.NonNull;
 
 /**
  * 通过组合的方式使用 {@link androidx.lifecycle.ViewModel}
@@ -7,8 +11,12 @@ package just.mvp.common.viewmodel;
  * <p>
  * 这里通过创建一个 {@link PresenterContainer} 的 ViewModel，来存储实现了 {@link IViewModel} 的任何对象，即将抽象类继承变更为接口组合
  */
-@FunctionalInterface
 public interface IViewModel {
+
+    /**
+     * Presenter 创建时触发.
+     */
+    void initialize(@NonNull Application application);
 
     /**
      * 传递  androidx.lifecycle.ViewModel#onCleared() 的回调

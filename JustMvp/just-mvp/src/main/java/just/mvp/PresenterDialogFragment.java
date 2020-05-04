@@ -17,7 +17,7 @@ import just.mvp.viewdata.BundleData;
 import just.mvp.viewdata.ViewData;
 import just.mvp.viewmodel.Presenters;
 
-public abstract class PresenterFragment<P extends IPresenter> extends SimpleFragment implements IView {
+public abstract class PresenterDialogFragment<P extends IPresenter> extends SimpleDialogFragment implements IView {
     /**
      * 记录 Presenter 的类型
      */
@@ -60,7 +60,7 @@ public abstract class PresenterFragment<P extends IPresenter> extends SimpleFrag
     ///////////////////////////////////////////////////////////////////////////
 
     @NonNull
-    private final BundleData bundleData = new BundleData(PresenterFragment.this::getArguments);
+    private final BundleData bundleData = new BundleData(PresenterDialogFragment.this::getArguments);
 
     @NonNull
     @Override

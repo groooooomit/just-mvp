@@ -4,12 +4,22 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import just.mvp.base.IPresenter;
 import just.mvp.base.IView;
-import just.mvp.common.viewmodel.Presenters;
+import just.mvp.viewdata.IntentData;
+import just.mvp.viewdata.ViewData;
+import just.mvp.viewmodel.Presenters;
 
 /**
  * 提供一个 Mvp 的模版，如果无法继承自 PresenterActivity，那么也可以直接使用 {@link Presenters} 工具
@@ -34,29 +44,55 @@ public abstract class PresenterActivity<P extends IPresenter> extends AppCompatA
         super.onCreate(savedInstanceState);
 
         /* view 和 presenter 进行绑定. */
-        Presenters
-                .bind(this, () -> {
-                    try {
-                        return presenterType.newInstance();
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(String.format("Cannot create an instance of %s", presenterType), e);
-                    } catch (InstantiationException e) {
-                        throw new RuntimeException(String.format("Cannot create an instance of %s", presenterType), e);
-                    }
-                });
+        Presenters.bind(this, this::onCreatePresenter);
+    }
+
+    /**
+     * 默认实现是进行反射调用
+     */
+    @NonNull
+    protected P onCreatePresenter() {
+        try {
+            return presenterType.newInstance();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(String.format("Cannot create an instance of %s", presenterType), e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(String.format("Cannot create an instance of %s", presenterType), e);
+        }
     }
 
     /**
      * 获取 Presenter
      */
-    public P getPresenter() {
-        return Presenters.get(this, presenterType);
+    @NonNull
+    protected final P getPresenter() {
+        //noinspection unchecked
+        return (P) Presenters.get(this);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // implements {@link IView}
+    ///////////////////////////////////////////////////////////////////////////
+
+    @NonNull
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Nullable
     @Override
-    public Context getContext() {
+    public FragmentActivity getActivity() {
         return this;
+    }
+
+    @NonNull
+    private final IntentData intentData = new IntentData(PresenterActivity.this::getIntent);
+
+    @NonNull
+    @Override
+    public ViewData getData() {
+        return intentData;
     }
 
     @Override
@@ -69,7 +105,38 @@ public abstract class PresenterActivity<P extends IPresenter> extends AppCompatA
     }
 
     @Override
-    public void showMessage(@NonNull String msg) {
+    public void toast(@NonNull String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void toastLong(@NonNull String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void snack(@NonNull String msg) {
+        Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void snackLong(@NonNull String msg) {
+        Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void snackIndefinite(@NonNull String msg) {
+        final Snackbar snackbar = Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("知道了", v -> snackbar.dismiss()).show();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // other
+    ///////////////////////////////////////////////////////////////////////////
+
+    @ColorInt
+    protected final int getColour(@ColorRes int colorId) {
+        return ContextCompat.getColor(this, colorId);
+    }
+
 }
