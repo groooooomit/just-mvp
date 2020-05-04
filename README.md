@@ -3,5 +3,5 @@
 
 ## 在 AndroidStudio 项目中使用
 ```gradle
-implementation 'com.bfu:just-mvp:1.0.2'
+implementation 'com.bfu:just-mvp:1.0.4'
 ```
