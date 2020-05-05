@@ -36,9 +36,9 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
     }
 
     override fun goMainPage(token: String) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("token", token)
-        startActivity(intent)
+        Intent(this, MainActivity::class.java)
+            .apply { putExtra("token", token) }
+            .let { startActivity(it) }
         finish()
     }
 
