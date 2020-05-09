@@ -42,7 +42,7 @@ public final class LifecycleOrderFixDelegate<V extends IView> implements Present
     /**
      * 记录 onCleared() 方法是否被触发过.
      */
-    private boolean isonClearedCalled;
+    private boolean isOnClearedCalled;
 
     /**
      * 记录 beforeViewDestroy() 方法是否被触发过
@@ -59,7 +59,7 @@ public final class LifecycleOrderFixDelegate<V extends IView> implements Present
     @Override
     public void onInitialize() {
         /* onInitialize() 执行后需要对应执行 onCleared(). */
-        isonClearedCalled = false;
+        isOnClearedCalled = false;
         origin.onInitialize();
     }
 
@@ -101,7 +101,7 @@ public final class LifecycleOrderFixDelegate<V extends IView> implements Present
         isBeforeViewDestroyCalled = true;
 
         /* 判断在这之前 onCleared() 方法有没有被触发过. */
-        if (isonClearedCalled) {
+        if (isOnClearedCalled) {
             /* 如果 onCleared() 方法被触发过，那么顺序需要调整. */
             origin.beforeViewDestroy();
 
@@ -121,7 +121,7 @@ public final class LifecycleOrderFixDelegate<V extends IView> implements Present
     @Override
     public void onCleared() {
         /* 标记 onCleared() 被触发了. */
-        isonClearedCalled = true;
+        isOnClearedCalled = true;
 
         /* 判断 beforeViewDestroy() 是否被调用过.  */
         //noinspection StatementWithEmptyBody

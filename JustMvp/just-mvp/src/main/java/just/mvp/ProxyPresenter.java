@@ -83,20 +83,22 @@ public class ProxyPresenter<V extends IView> extends BasePresenter<V> {
     // static components
     ///////////////////////////////////////////////////////////////////////////
 
+    // @formatter:off
     /**
      * 基本数据类型的默认值.
      */
     @NonNull
     private static final Map<Class, Object> PRIMITIVE_DEFAULT_VALUE = new HashMap<Class, Object>() {{
-        put(byte.class, (byte) 0);
-        put(short.class, (short) 0);
-        put(char.class, (char) 0);
-        put(int.class, 0);
-        put(long.class, 0L);
-        put(float.class, 0F);
-        put(double.class, 0D);
-        put(boolean.class, false);
+        put(byte.class,     (byte)  0);
+        put(short.class,    (short) 0);
+        put(char.class,     (char)  0);
+        put(int.class,      0        );
+        put(long.class,     0L       );
+        put(float.class,    0F       );
+        put(double.class,   0D       );
+        put(boolean.class,  false    );
     }};
+    // @formatter:on
 
     /**
      * Presenter 持有 ProxyView，ProxyView 持有 InvocationHandler，InvocationHandler 持有 原始 View 的引用
