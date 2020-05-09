@@ -1,6 +1,7 @@
-package com.bfu.just.mvp
+package com.bfu.just.mvp.ui.activity
 
 import android.os.Bundle
+import com.bfu.just.mvp.R
 import com.bfu.just.mvp.core.contract.MainContract
 import com.bfu.just.mvp.core.presenter.MainPresenter
 import just.mvp.PresenterActivity

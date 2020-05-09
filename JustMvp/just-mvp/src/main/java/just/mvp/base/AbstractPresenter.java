@@ -60,7 +60,7 @@ public abstract class AbstractPresenter<V extends IView> implements IPresenter<V
      * 通常情况下，如果 View 非 active，那么不应该对 View 进行任何操纵
      */
     @Nullable
-    protected final V getView() {
+    protected final V peekActiveView() {
         return (null != view && view.isActive()) ? view : null;
     }
 
@@ -69,7 +69,7 @@ public abstract class AbstractPresenter<V extends IView> implements IPresenter<V
      */
     @Deprecated
     @Nullable
-    protected final V getRawView() {
+    protected final V peekRawView() {
         return view;
     }
 

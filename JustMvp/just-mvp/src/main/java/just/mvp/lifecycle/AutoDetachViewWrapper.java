@@ -1,4 +1,4 @@
-package just.mvp.llifecycle;
+package just.mvp.lifecycle;
 
 import androidx.annotation.NonNull;
 

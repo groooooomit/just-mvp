@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import just.mvp.base.IPresenter;
 import just.mvp.base.IView;
+import just.mvp.view.SimpleDialogFragment;
 import just.mvp.viewdata.BundleData;
 import just.mvp.viewdata.ViewData;
 import just.mvp.viewmodel.Presenters;

@@ -7,11 +7,12 @@ import android.os.Looper;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 
 import just.mvp.base.IView;
-import just.mvp.llifecycle.LifeCyclePresenter;
+import just.mvp.lifecycle.LifeCyclePresenter;
 
 
 /**
@@ -45,6 +46,14 @@ import just.mvp.llifecycle.LifeCyclePresenter;
 public class BasePresenter<V extends IView> extends LifeCyclePresenter<V> {
 
     /**
+     * 访问 View 的入口方法，子类可以重写以实现自己的需求
+     */
+    @Nullable
+    protected V getView() {
+        return peekActiveView();
+    }
+
+    /**
      * 内置一个发送延时任务的 Handler
      */
     @NonNull
@@ -61,16 +70,17 @@ public class BasePresenter<V extends IView> extends LifeCyclePresenter<V> {
      * 如果 View 处于 active 状态，就执行 action
      */
     @UiThread
-    private void runIfViewActive(@NonNull Runnable action) {
-        if (isViewActive()) {
-            action.run();
+    private void runIfViewActive(@NonNull ViewRunnable<V> action) {
+        final V view = peekActiveView();
+        if (null != view) {
+            action.run(view);
         }
     }
 
     /**
-     * 在 UI 线程执行
+     * 在 UI 线程执行，且 View 处于 active 状态
      */
-    protected final void runOnUi(@NonNull Runnable action) {
+    protected final void runOnUi(@NonNull ViewRunnable<V> action) {
         if (isMainThread()) {
             runIfViewActive(action);
         } else {
@@ -79,17 +89,17 @@ public class BasePresenter<V extends IView> extends LifeCyclePresenter<V> {
     }
 
     /**
-     * 在 UI 线程延时执行
+     * 在 UI 线程延时执行，且 View 处于 active 状态
      */
-    protected final void runOnUi(long delay, @NonNull Runnable action) {
+    protected final void runOnUi(long delay, @NonNull ViewRunnable<V> action) {
         uiHandler.postDelayed(() -> runIfViewActive(action), delay);
     }
 
     /**
-     * 在 UI 线程延时执行
+     * 在 UI 线程延时执行，且 View 处于 active 状态
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
-    protected final void runOnUi(@NonNull Object token, long delay, @NonNull Runnable action) {
+    protected final void runOnUi(@NonNull Object token, long delay, @NonNull ViewRunnable<V> action) {
         uiHandler.postDelayed(() -> runIfViewActive(action), token, delay);
     }
 

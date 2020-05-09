@@ -1,5 +1,4 @@
-package just.mvp;
-
+package just.mvp.view;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,13 +15,21 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
-
-public abstract class SimpleDialogFragment extends DialogFragment {
+/**
+ * Fragment 的简单封装，设置布局的两种方式：
+ * 1、重写 {@link SimpleDialogFragment#getLayoutResId()} 方法
+ * 2、在类上增加 {@link LayoutResId} 注解
+ */
+// @LayoutResId(R.layout.fragment_dialog_xxx)
+public class SimpleDialogFragment extends DialogFragment {
 
     // --------------------------------------------------------------------------------------------------------------------------------------------------
 
     @LayoutRes
-    protected abstract int getLayoutResId();
+    protected int getLayoutResId() {
+        final LayoutResId layoutResId = this.getClass().getAnnotation(LayoutResId.class);
+        return null == layoutResId ? 0 : layoutResId.value();
+    }
 
     // --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +42,7 @@ public abstract class SimpleDialogFragment extends DialogFragment {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
 
-        int layoutResId = getLayoutResId();
+        final int layoutResId = getLayoutResId();
         if (0 != layoutResId) {
             final View rootView = inflater.inflate(layoutResId, container, false);
             rootView.setClickable(true);// 防止点击穿透

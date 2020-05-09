@@ -1,4 +1,4 @@
-package just.mvp.llifecycle;
+package just.mvp.lifecycle;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
@@ -50,7 +50,7 @@ public abstract class LifeCyclePresenter<V extends IView> extends AbstractPresen
      * @return 返回 true 表示 View 处于 created 状态
      */
     protected final boolean isViewCreated() {
-        final V view = getView();
+        final V view = peekActiveView();
         return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.CREATED);
     }
 
@@ -60,7 +60,7 @@ public abstract class LifeCyclePresenter<V extends IView> extends AbstractPresen
      * @return 返回 true 表示 View 处于 started 状态
      */
     protected final boolean isViewStarted() {
-        final V view = getView();
+        final V view = peekActiveView();
         return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
     }
 
@@ -70,17 +70,8 @@ public abstract class LifeCyclePresenter<V extends IView> extends AbstractPresen
      * @return 返回 true 表示 View 处于 resumed 状态
      */
     protected final boolean isViewResumed() {
-        final V view = getView();
+        final V view = peekActiveView();
         return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
     }
-
-    /**
-     * 在 Presenter 中判断 View 是否 active
-     */
-    protected final boolean isViewActive() {
-        final V view = getView();
-        return null != view && view.isActive();
-    }
-
 
 }

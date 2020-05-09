@@ -3,6 +3,7 @@ package com.bfu.just.mvp.core.contract
 import just.mvp.base.IPresenter
 import just.mvp.base.IView
 
+
 interface LoginContract {
 
     interface View : IView {
@@ -12,6 +13,8 @@ interface LoginContract {
         fun showLoginEnd()
 
         fun goMainPage(token: String)
+
+        val width: Int
     }
 
     interface Presenter : IPresenter<View> {

@@ -1,4 +1,4 @@
-package just.mvp.llifecycle;
+package just.mvp.lifecycle;
 
 /**
  * 仿照 {@link androidx.lifecycle.DefaultLifecycleObserver} 定义 View 的生命周期

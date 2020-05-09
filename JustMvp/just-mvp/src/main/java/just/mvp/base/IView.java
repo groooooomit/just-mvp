@@ -3,7 +3,6 @@ package just.mvp.base;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -22,19 +21,16 @@ public interface IView extends LifecycleOwner, ViewModelStoreOwner {
     /**
      * 获取 View 的 Context 对象
      */
-    @Nullable
     Context getContext();
 
     /**
      * 获取 view 的 activity
      */
-    @Nullable
     FragmentActivity getActivity();
 
     /**
      * 获取当前 View 持有的数据，Activity 的数据来源于 getIntent()，Fragment 的数据来源于 getArguments()
      */
-    @NonNull
     ViewData getData();
 
     /**
@@ -43,32 +39,37 @@ public interface IView extends LifecycleOwner, ViewModelStoreOwner {
     boolean isActive();
 
     ///////////////////////////////////////////////////////////////////////////
-    // 以下是常用的界面弹出消息
+    // 以下是常用的界面弹出消息，加了 default 关键字，不强制子类实现
     ///////////////////////////////////////////////////////////////////////////
 
     /**
      * 显示 toast 消息
      */
-    void toast(@NonNull String msg);
+    default void toast(@NonNull String msg) {
+    }
 
     /**
      * 显示一个长的 toast 消息
      */
-    void toastLong(@NonNull String msg);
+    default void toastLong(@NonNull String msg) {
+    }
 
     /**
      * 显示 snack 消息，自动消失
      */
-    void snack(@NonNull String msg);
+    default void snack(@NonNull String msg) {
+    }
 
     /**
      * 显示一个长的 snack 消息，自动消失
      */
-    void snackLong(@NonNull String msg);
+    default void snackLong(@NonNull String msg) {
+    }
 
     /**
      * 显示 snack 消息，点击才消失
      */
-    void snackIndefinite(@NonNull String msg);
+    default void snackIndefinite(@NonNull String msg) {
+    }
 
 }

@@ -1,8 +1,9 @@
 package com.bfu.just.mvp.core.presenter
 
 import com.bfu.just.mvp.core.contract.LoginContract
+import just.mvp.BasePresenter
 
-class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Presenter {
+class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presenter {
 
     override fun login(username: String?, password: String?) {
         view?.showLoginStart()
@@ -30,7 +31,7 @@ class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Present
             Thread.sleep(5000)
             if ("user" == username && "123456" == password) {
                 runOnUi {
-                    view?.apply {
+                    it.apply {
                         showLoginEnd()
                         toastLong("登录成功")
                         goMainPage("abc123")
@@ -38,7 +39,7 @@ class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Present
                 }
             } else {
                 runOnUi {
-                    view?.apply {
+                    it.apply {
                         showLoginEnd()
                         snack("用户名或密码错误")
                     }

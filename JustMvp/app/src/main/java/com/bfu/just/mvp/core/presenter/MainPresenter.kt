@@ -7,6 +7,6 @@ class MainPresenter : BasePresenter<MainContract.View>(), MainContract.Presenter
 
     override fun afterViewCreate() {
         val token = view!!.data.getString("token")
-        view!!.showToken(token)
+        runOnUi { it.showToken(token) }
     }
 }

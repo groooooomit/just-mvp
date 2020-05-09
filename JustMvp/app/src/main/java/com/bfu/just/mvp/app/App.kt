@@ -1,4 +1,4 @@
-package com.bfu.just.mvp
+package com.bfu.just.mvp.app
 
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary
