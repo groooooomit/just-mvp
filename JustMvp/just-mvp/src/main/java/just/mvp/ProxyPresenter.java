@@ -6,13 +6,10 @@ import androidx.annotation.Nullable;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import just.mvp.base.IView;
 
 /**
  * 通过动态代理对 View 对象的方法调用统一进行 active 状态判断
@@ -25,26 +22,23 @@ import just.mvp.base.IView;
  * <pre/>
  *
  * @param <V> Contract 中定义的 View 接口
- * @param <X> 实现 View 接口的实际类型，需要用它提前创建好代理对象，这样才能保证无论什么时候调用 getView，都不会返回 null
  */
-public class ProxyPresenter<V extends IView, X extends V> extends BasePresenter<V> {
-
-    /**
-     * View 的具体类型
-     */
-    @NonNull
-    private final Class<X> actualViewClass = getActualViewType();
+public class ProxyPresenter<V extends IView> extends BasePresenter<V> {
 
     /**
      * View 的代理对象
      */
-    @NonNull
-    private final V proxyView = createProxyView(actualViewClass);
+    @Nullable
+    private V proxyView;
 
     @CallSuper
     @Override
-    protected void onAttachView(@NonNull V view) {
-        super.onAttachView(view);
+    public void onAttachView(@NonNull V view) {
+
+        /* 根据实际传入的 View 创建它的代理对象. */
+        //noinspection unchecked
+        proxyView = newProxyViewIfNull((Class<V>) view.getClass());
+
         /* 代理 view 持有原始 view 的引用. */
         //noinspection unchecked
         ((ViewActiveInvocationHandler<V>) Proxy.getInvocationHandler(proxyView)).storeViewRef(view);
@@ -52,29 +46,37 @@ public class ProxyPresenter<V extends IView, X extends V> extends BasePresenter<
 
     @CallSuper
     @Override
-    protected void onDetachView(@NonNull V view) {
+    public void onDetachView(@NonNull V view) {
         /* 代理 view 清除对原始 view 的引用. */
         //noinspection unchecked
-        ((ViewActiveInvocationHandler<V>) Proxy.getInvocationHandler(proxyView)).clearViewRef();
+        ((ViewActiveInvocationHandler<V>) Proxy.getInvocationHandler(Objects.requireNonNull(proxyView))).clearViewRef();
         super.onDetachView(view);
     }
 
     /**
-     * 返回永不为 null 的代理 View 对象
+     * 返回代理 View，第一次回调 onAttachView 前，proxyView 为 null，只要进行过一次 attach 后，Presenter 便得到了 View 的实际类型，此后 ProxyView 将不会为 null。
+     * <p>
+     * ProxyView 会在 onDetachView 回调时清除自己持有的原始 View 的引用，以避免内存泄漏的出现
      */
     @NonNull
     @Override
     protected V getView() {
+        if (null == proxyView) {
+            throw new RuntimeException("You should getView since onAttachView() be called at least once. ");
+        }
         return proxyView;
     }
 
     /**
-     * 获取 View 的具体类型
+     * 创建代理对象
      */
     @NonNull
-    private Class<X> getActualViewType() {
-        //noinspection unchecked
-        return (Class<X>) ((ParameterizedType) (Objects.requireNonNull(this.getClass().getGenericSuperclass()))).getActualTypeArguments()[1];
+    private V newProxyViewIfNull(@NonNull Class<V> viewClass) {
+        if (null == proxyView) {
+            //noinspection unchecked
+            proxyView = (V) Proxy.newProxyInstance(viewClass.getClassLoader(), viewClass.getInterfaces(), new ViewActiveInvocationHandler<V>());
+        }
+        return proxyView;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -95,15 +97,6 @@ public class ProxyPresenter<V extends IView, X extends V> extends BasePresenter<
         put(double.class, 0D);
         put(boolean.class, false);
     }};
-
-    /**
-     * 创建代理对象
-     */
-    @NonNull
-    private static <V extends IView> V createProxyView(@NonNull Class<V> viewClass) {
-        //noinspection unchecked
-        return (V) Proxy.newProxyInstance(viewClass.getClassLoader(), viewClass.getInterfaces(), new ViewActiveInvocationHandler<V>());
-    }
 
     /**
      * Presenter 持有 ProxyView，ProxyView 持有 InvocationHandler，InvocationHandler 持有 原始 View 的引用

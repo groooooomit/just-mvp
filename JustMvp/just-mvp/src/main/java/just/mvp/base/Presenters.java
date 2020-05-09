@@ -1,4 +1,4 @@
-package just.mvp.viewmodel;
+package just.mvp.base;
 
 import android.app.Activity;
 import android.app.Application;
@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
-import just.mvp.base.IPresenter;
-import just.mvp.base.IView;
+import just.mvp.IPresenter;
+import just.mvp.IView;
 
 /**
  * Presenter 辅助工具

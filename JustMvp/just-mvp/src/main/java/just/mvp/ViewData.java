@@ -1,4 +1,4 @@
-package just.mvp.viewdata;
+package just.mvp;
 
 import android.os.Bundle;
 import android.os.Parcelable;

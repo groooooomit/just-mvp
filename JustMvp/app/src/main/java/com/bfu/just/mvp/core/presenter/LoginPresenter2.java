@@ -1,7 +1,6 @@
 package com.bfu.just.mvp.core.presenter;
 
 import com.bfu.just.mvp.core.contract.LoginContract;
-import com.bfu.just.mvp.ui.activity.LoginActivity;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +9,7 @@ import just.mvp.ProxyPresenter;
 /**
  * {@link LoginPresenter} 的 ProxyPresenter 版本
  */
-public class LoginPresenter2 extends ProxyPresenter<LoginContract.View, LoginActivity> implements LoginContract.Presenter {
+public class LoginPresenter2 extends ProxyPresenter<LoginContract.View> implements LoginContract.Presenter {
 
     @Override
     public void login(@Nullable String username, @Nullable String password) {

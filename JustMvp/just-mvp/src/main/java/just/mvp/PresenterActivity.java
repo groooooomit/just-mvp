@@ -15,11 +15,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import just.mvp.base.IPresenter;
-import just.mvp.base.IView;
-import just.mvp.viewdata.IntentData;
-import just.mvp.viewdata.ViewData;
-import just.mvp.viewmodel.Presenters;
+import just.mvp.base.IntentData;
+import just.mvp.base.Presenters;
 
 /**
  * 提供一个 Mvp 的模版，如果无法继承自 PresenterActivity，那么也可以直接使用 {@link Presenters} 工具

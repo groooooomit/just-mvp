@@ -1,4 +1,4 @@
-package just.mvp.view;
+package just.mvp.widget;
 
 
 import androidx.annotation.LayoutRes;

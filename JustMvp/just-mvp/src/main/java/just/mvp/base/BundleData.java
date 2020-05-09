@@ -1,4 +1,4 @@
-package just.mvp.viewdata;
+package just.mvp.base;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
+
+import just.mvp.ViewData;
 
 public final class BundleData implements ViewData {
 

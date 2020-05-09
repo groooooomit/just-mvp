@@ -1,4 +1,4 @@
-package just.mvp.base;
+package just.mvp;
 
 import android.content.Context;
 
@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelStoreOwner;
-
-import just.mvp.viewdata.ViewData;
 
 /**
  * View 用来承载界面更新和接收用户输入，这里定义 View 的通用方法。

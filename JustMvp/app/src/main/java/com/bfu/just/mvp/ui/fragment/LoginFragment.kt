@@ -1,19 +1,19 @@
-package com.bfu.just.mvp.ui.activity
+package com.bfu.just.mvp.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.bfu.just.mvp.R
 import com.bfu.just.mvp.core.contract.LoginContract
-import com.bfu.just.mvp.core.presenter.LogPresenterActivity
-import com.bfu.just.mvp.core.presenter.LoginPresenter
+import com.bfu.just.mvp.core.presenter.LoginPresenter2
+import com.bfu.just.mvp.ui.activity.MainActivity
+import just.mvp.widget.LayoutResId
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : LogPresenterActivity<LoginPresenter>(), LoginContract.View {
+@LayoutResId(R.layout.fragment_login)
+class LoginFragment : LogFragment<LoginPresenter2>(), LoginContract.View {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         login.setOnClickListener {
             /* 用户名： user， 密码： 123456 */
             val usernameStr = username.text?.toString()
@@ -37,14 +37,12 @@ class LoginActivity : LogPresenterActivity<LoginPresenter>(), LoginContract.View
     }
 
     override fun goMainPage(token: String) {
-        Intent(this, MainActivity::class.java)
+        Intent(activity, MainActivity::class.java)
             .apply { putExtra("token", token) }
             .let { startActivity(it) }
-        finish()
+        activity?.finish()
     }
 
-    override val width: Int
-        get() = 100
-
+    override val width = 100
 
 }

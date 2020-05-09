@@ -7,7 +7,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.4"
+        versionName "1.0.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -59,7 +59,7 @@ ext {
     pom_developerId = 'groooooomit'
     pom_developerName = 'groooooomit'
     pom_developerEmail = 'fubofubo@hotmail.com'
-    pom_version = '1.0.4'
+    pom_version = '1.0.6'
     //
     bintray_repo = 'just' // your repo name
     bintray_name = 'mvp' // has to be same as your library module name

@@ -5,6 +5,9 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import just.mvp.IPresenter;
+import just.mvp.IView;
+
 /**
  * {@link IPresenter} 的默认实现.
  *
@@ -27,27 +30,26 @@ public abstract class AbstractPresenter<V extends IView> implements IPresenter<V
     @Override
     public final void initialize(@NonNull Application application) {
         this.application = application;
-        onInitialize();
+        performOnInitialize();
     }
-
 
     @Override
     public final void attachView(@NonNull V view) {
         this.view = view;
-        onAttachView(view);
+        performOnAttachView(view);
     }
 
     @Override
     public final void detachView() {
         if (view != null) {
-            onDetachView(view);
+            performOnDetachView(view);
             this.view = null;
         }
     }
 
     @Override
-    public final void onCleared() {
-        onRelease();
+    public final void cleared() {
+        performOnCleared();
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -69,7 +71,7 @@ public abstract class AbstractPresenter<V extends IView> implements IPresenter<V
      */
     @Deprecated
     @Nullable
-    protected final V peekRawView() {
+    protected final V getRawView() {
         return view;
     }
 
@@ -89,21 +91,21 @@ public abstract class AbstractPresenter<V extends IView> implements IPresenter<V
     /**
      * Presenter 创建并持有 Application 对象后回调
      */
-    protected abstract void onInitialize();
+    protected abstract void performOnInitialize();
 
     /**
      * Presenter 持有 View 的引用后回调
      */
-    protected abstract void onAttachView(@NonNull V view);
+    protected abstract void performOnAttachView(@NonNull V view);
 
     /**
      * Presenter 在即将解除 View 的引用前回调
      */
-    protected abstract void onDetachView(@NonNull V view);
+    protected abstract void performOnDetachView(@NonNull V view);
 
     /**
      * Presenter 跟随 ViewModel 一同被回收时回调
      */
-    protected abstract void onRelease();
+    protected abstract void performOnCleared();
 
 }

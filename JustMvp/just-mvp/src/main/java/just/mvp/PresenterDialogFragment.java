@@ -11,12 +11,9 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import just.mvp.base.IPresenter;
-import just.mvp.base.IView;
-import just.mvp.view.SimpleDialogFragment;
-import just.mvp.viewdata.BundleData;
-import just.mvp.viewdata.ViewData;
-import just.mvp.viewmodel.Presenters;
+import just.mvp.widget.SimpleDialogFragment;
+import just.mvp.base.BundleData;
+import just.mvp.base.Presenters;
 
 public abstract class PresenterDialogFragment<P extends IPresenter> extends SimpleDialogFragment implements IView {
     /**

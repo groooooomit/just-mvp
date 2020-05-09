@@ -1,7 +1,7 @@
 package com.bfu.just.mvp.core.contract
 
-import just.mvp.base.IPresenter
-import just.mvp.base.IView
+import just.mvp.IPresenter
+import just.mvp.IView
 
 
 interface LoginContract {

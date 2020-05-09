@@ -1,9 +1,9 @@
-package just.mvp.base;
+package just.mvp;
 
 
 import androidx.annotation.NonNull;
 
-import just.mvp.viewmodel.IViewModel;
+import just.mvp.base.IViewModel;
 
 
 /**

@@ -41,7 +41,7 @@ dependencies {
 
     /* import just-mvp */
     implementation project(path: ':just-mvp')
-//    implementation 'com.bfu:just-mvp:1.0.4'
+//    implementation 'com.bfu:just-mvp:1.0.6'
 
     /* 内存泄漏检查 */
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'

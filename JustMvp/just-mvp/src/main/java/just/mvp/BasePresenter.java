@@ -10,40 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
+import androidx.lifecycle.Lifecycle;
 
-import just.mvp.base.IView;
-import just.mvp.lifecycle.LifeCyclePresenter;
-
+import just.mvp.base.LifecyclePresenter;
 
 /**
  * 内置一个 ui handler，用来便捷地更新 UI
- * <p>
- * lifeCycleOwner、viewModel、Activity/Fragment 销毁时生命周期：
- * <pre>
- *     activity:
- *          DefaultLifecycleObserver onDestroy
- *          viewModel onCleared
- *          onDestroy begin
- *                  fragmentA:
- *                          viewModel onCleared
- *                          DefaultLifecycleObserver onDestroy
- *                          onDestroy
- *                  fragmentB:
- *                          viewModel onCleared
- *                          DefaultLifecycleObserver onDestroy
- *                          onDestroy
- *                  fragmentC:
- *                          viewModel onCleared
- *                          DefaultLifecycleObserver onDestroy
- *                          onDestroy
- *          onDestroy end
- * <pre/>
- * <pre/>
- * Presenter 的生命周期长于 View，所以需要及时释放资源.
  *
  * @param <V> View
  */
-public class BasePresenter<V extends IView> extends LifeCyclePresenter<V> {
+public class BasePresenter<V extends IView> extends LifecyclePresenter<V> {
 
     /**
      * 访问 View 的入口方法，子类可以重写以实现自己的需求
@@ -122,7 +98,38 @@ public class BasePresenter<V extends IView> extends LifeCyclePresenter<V> {
      */
     @CallSuper
     @Override
-    protected void onRelease() {
+    public void onCleared() {
         clearAllUiRuns();
     }
+
+    /**
+     * 判断 view 是否处于 created 状态
+     *
+     * @return 返回 true 表示 View 处于 created 状态
+     */
+    protected final boolean isViewCreated() {
+        final V view = peekActiveView();
+        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.CREATED);
+    }
+
+    /**
+     * 判断 view 是否处于 started 状态
+     *
+     * @return 返回 true 表示 View 处于 started 状态
+     */
+    protected final boolean isViewStarted() {
+        final V view = peekActiveView();
+        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
+    }
+
+    /**
+     * 判断 view 是否处于 resumed 状态
+     *
+     * @return 返回 true 表示 View 处于 resumed 状态
+     */
+    protected final boolean isViewResumed() {
+        final V view = peekActiveView();
+        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
+    }
+
 }

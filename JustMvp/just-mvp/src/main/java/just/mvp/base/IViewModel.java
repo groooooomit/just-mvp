@@ -1,4 +1,4 @@
-package just.mvp.viewmodel;
+package just.mvp.base;
 
 import android.app.Application;
 
@@ -23,5 +23,5 @@ public interface IViewModel {
      * <p>
      * [小米 note] 测试发现：当滑动杀死 app 的时候，onCleared 不会被触发；当点击清理按钮杀死 app 的时候，会回调 onCleared
      */
-    void onCleared();
+    void cleared();
 }

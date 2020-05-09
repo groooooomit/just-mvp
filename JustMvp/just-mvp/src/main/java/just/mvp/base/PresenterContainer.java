@@ -1,4 +1,4 @@
-package just.mvp.viewmodel;
+package just.mvp.base;
 
 import android.app.Application;
 
@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 
-import just.mvp.base.IPresenter;
+import just.mvp.IPresenter;
 
 
 /**
@@ -55,7 +55,7 @@ public final class PresenterContainer extends AndroidViewModel {
     @Override
     protected final void onCleared() {
         if (null != presenter) {
-            presenter.onCleared();
+            presenter.cleared();
             presenter = null;
         }
     }
