@@ -1,13 +1,9 @@
-package just.mvp;
-
+package just.mvp.base;
 
 import androidx.annotation.NonNull;
 
-import just.mvp.base.IViewModel;
-
-
 /**
- * Presenter 用来承载界面背后的业务逻辑，这里定义 Presenter 的通用方法。
+ * Presenter 用来承载界面背后的业务逻辑，只定义 Presenter 的通用方法。
  * <p>
  * IPresenter 继承自 {@link IViewModel}，使得它的生命周期和 ViewModel 相同
  */

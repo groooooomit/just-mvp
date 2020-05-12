@@ -1,6 +1,7 @@
-package just.mvp;
+package just.mvp.base;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -8,13 +9,11 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 /**
- * View 用来承载界面更新和接收用户输入，这里定义 View 的通用方法。
- * <p>
- * IView 继承自 {@link LifecycleOwner}，方便在 Presenter 中对 View 添加生命周期监听器
+ * View 用来承载界面更新、数据展示和接收用户输入，只定义 Presenter 需要对 View 调用的方法
  * <p>
  * IView 继承自 {@link ViewModelStoreOwner}，因为在本框架中 Presenter 是由 ViewModel 承载的
  */
-public interface IView extends LifecycleOwner, ViewModelStoreOwner {
+public interface IView extends ViewModelStoreOwner, LifecycleOwner {
 
     /**
      * 获取 View 的 Context 对象
@@ -32,42 +31,32 @@ public interface IView extends LifecycleOwner, ViewModelStoreOwner {
     ViewData getData();
 
     /**
-     * 判断 View 是否活跃
+     * 判断 View 是否还可更新
      */
     boolean isActive();
 
     ///////////////////////////////////////////////////////////////////////////
-    // 以下是常用的界面弹出消息，加了 default 关键字，不强制子类实现
+    // 内置两个常用的弹出消息的方法
     ///////////////////////////////////////////////////////////////////////////
 
     /**
      * 显示 toast 消息
      */
     default void toast(@NonNull String msg) {
+        final Context context = getContext();
+        if (null != context) {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
      * 显示一个长的 toast 消息
      */
     default void toastLong(@NonNull String msg) {
-    }
-
-    /**
-     * 显示 snack 消息，自动消失
-     */
-    default void snack(@NonNull String msg) {
-    }
-
-    /**
-     * 显示一个长的 snack 消息，自动消失
-     */
-    default void snackLong(@NonNull String msg) {
-    }
-
-    /**
-     * 显示 snack 消息，点击才消失
-     */
-    default void snackIndefinite(@NonNull String msg) {
+        final Context context = getContext();
+        if (null != context) {
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        }
     }
 
 }

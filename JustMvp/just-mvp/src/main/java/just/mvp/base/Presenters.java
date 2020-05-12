@@ -4,15 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
-
-import just.mvp.IPresenter;
-import just.mvp.IView;
 
 /**
  * Presenter 辅助工具
@@ -43,10 +38,9 @@ public final class Presenters {
      * @param view    实现了 {@link IView}
      * @param creator 如果 Presenter 没有被创建，那么通过 Creator 创建
      */
-    public static void bind(@NonNull IView view, @NonNull PresenterContainer.Creator creator) {
+    public static <V extends IView, P extends IPresenter> void bind(@NonNull V view, @NonNull PresenterContainer.Creator<P> creator) {
         //noinspection unchecked
-        of(view)
-                .get(PresenterContainer.class)
+        of(view).get(PresenterContainer.class)
                 .preparePresenter(creator)
                 .attachView(view);
     }
@@ -58,8 +52,9 @@ public final class Presenters {
      * @return 绑定到 View 的 Presenter 实例
      */
     @NonNull
-    public static IPresenter get(@NonNull IView view) {
-        return of(view)
+    public static <V extends IView, P extends IPresenter> P get(@NonNull V view) {
+        //noinspection unchecked
+        return (P) of(view)
                 .get(PresenterContainer.class)
                 .requirePresenter();
     }
@@ -70,8 +65,7 @@ public final class Presenters {
     private static Application checkApplication(@NonNull Activity activity) {
         final Application application = activity.getApplication();
         if (application == null) {
-            throw new IllegalStateException("Your activity/fragment is not yet attached to "
-                    + "Application. You can't request ViewModel before onCreate call.");
+            throw new IllegalStateException("Your activity is not yet attached to Application. You can't request ViewModel before onCreate call.");
         }
         return application;
     }
@@ -86,10 +80,10 @@ public final class Presenters {
     }
 
     /**
-     * 仿照 {@link androidx.lifecycle.ViewModelProviders#of(FragmentActivity)} 的写法创建 ViewModelProvider 对象
+     * 创建 ViewModelProvider 对象
      */
     @NonNull
-    private static <V extends ViewModelStoreOwner & IView> ViewModelProvider of(@NonNull V view) {
+    private static <V extends IView> ViewModelProvider of(@NonNull V view) {
         final Application application = checkApplication(checkActivity(view));
         final ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application);
         return new ViewModelProvider(view, factory);

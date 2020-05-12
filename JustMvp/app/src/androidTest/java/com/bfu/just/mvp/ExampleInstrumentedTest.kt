@@ -21,4 +21,7 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getTargetContext()
         assertEquals("com.bfu.just.mvp", appContext.packageName)
     }
+
+
+
 }

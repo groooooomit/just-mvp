@@ -1,4 +1,4 @@
-package just.mvp;
+package just.mvp.base;
 
 import android.os.Bundle;
 import android.os.Parcelable;

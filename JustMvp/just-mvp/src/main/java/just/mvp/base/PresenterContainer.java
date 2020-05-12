@@ -6,21 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 
-import just.mvp.IPresenter;
-
 
 /**
  * 以组合的方式使用 ViewModel，而非继承
  * <p>
  * 继承自 {@link AndroidViewModel} 以获得 Application 对象.
  */
-public final class PresenterContainer extends AndroidViewModel {
+public final class PresenterContainer<P extends IPresenter & IViewModel> extends AndroidViewModel {
 
     /**
      * PresenterContainer 持有的 Presenter 对象
      */
     @Nullable
-    private IPresenter presenter;
+    private P presenter;
 
     public PresenterContainer(@NonNull Application application) {
         super(application);
@@ -30,7 +28,7 @@ public final class PresenterContainer extends AndroidViewModel {
      * 检查 Presenter 是否存在，如果不存在，那么通过外部传入的 {@link Creator} 创建，并为 Presenter 注入 Application 对象
      */
     @NonNull
-    public final IPresenter preparePresenter(@NonNull Creator creator) {
+    public final P preparePresenter(@NonNull Creator<P> creator) {
         if (null == presenter) {
             presenter = creator.create();
             presenter.initialize(getApplication());
@@ -42,7 +40,7 @@ public final class PresenterContainer extends AndroidViewModel {
      * 获取 Presenter
      */
     @NonNull
-    public final IPresenter requirePresenter() {
+    public final P requirePresenter() {
         if (null == presenter) {
             throw new RuntimeException("Presenter doesn't prepare or this container already cleared!");
         }
@@ -64,9 +62,9 @@ public final class PresenterContainer extends AndroidViewModel {
      * Presenter 创建器
      */
     @FunctionalInterface
-    public interface Creator {
+    public interface Creator<P extends IPresenter & IViewModel> {
         @NonNull
-        IPresenter create();
+        P create();
     }
 
 

@@ -1,10 +1,11 @@
-package just.mvp.base;
+package just.mvp.lifecycle;
 
 import androidx.annotation.NonNull;
 
-import just.mvp.IView;
+import just.mvp.base.IView;
 
 /**
+ * 修正 presenter 生命周期方法调用顺序
  * <p>
  * lifeCycleOwner、viewModel、Activity/Fragment 销毁时生命周期：
  * <pre>
@@ -37,7 +38,7 @@ import just.mvp.IView;
  * <pre/>
  * @param <V> View
  */
-public final class LifecycleOrderFixDelegate<V extends IView> implements PresenterLifecycle<V> {
+public class PresenterLifecycleOrderFixWrapper<V extends IView> extends PresenterLifecycleWrapper<V> {
 
     /**
      * 记录 onCleared() 方法是否被触发过.
@@ -47,75 +48,42 @@ public final class LifecycleOrderFixDelegate<V extends IView> implements Present
     /**
      * 记录 beforeViewDestroy() 方法是否被触发过
      */
-    private boolean isBeforeViewDestroyCalled;
+    private boolean isOnViewDestroyCalled;
 
-    @NonNull
-    private final PresenterLifecycle<V> origin;
-
-    public LifecycleOrderFixDelegate(@NonNull PresenterLifecycle<V> origin) {
-        this.origin = origin;
+    public PresenterLifecycleOrderFixWrapper(@NonNull PresenterLifecycle<V> origin) {
+        super(origin);
     }
 
     @Override
     public void onInitialize() {
         /* onInitialize() 执行后需要对应执行 onCleared(). */
         isOnClearedCalled = false;
-        origin.onInitialize();
-    }
-
-    @Override
-    public void onAttachView(@NonNull V view) {
-        origin.onAttachView(view);
+        super.onInitialize();
     }
 
     @Override
     public void afterViewCreate() {
         /* afterViewCreate() 执行后需要对应执行 beforeViewDestroy(). */
-        isBeforeViewDestroyCalled = false;
-        origin.afterViewCreate();
-    }
-
-    @Override
-    public void afterViewStart() {
-        origin.afterViewStart();
-    }
-
-    @Override
-    public void afterViewResume() {
-        origin.afterViewResume();
-    }
-
-    @Override
-    public void beforeViewPause() {
-        origin.beforeViewPause();
-    }
-
-    @Override
-    public void beforeViewStop() {
-        origin.beforeViewStop();
+        isOnViewDestroyCalled = false;
+        super.afterViewCreate();
     }
 
     @Override
     public void beforeViewDestroy() {
         /* 标记 beforeViewDestroy() 被触发了. */
-        isBeforeViewDestroyCalled = true;
+        isOnViewDestroyCalled = true;
 
         /* 判断在这之前 onCleared() 方法有没有被触发过. */
         if (isOnClearedCalled) {
             /* 如果 onCleared() 方法被触发过，那么顺序需要调整. */
-            origin.beforeViewDestroy();
+            super.beforeViewDestroy();
 
             /* 执行完 beforeViewDestroy() 后补发 onCleared(). */
-            origin.onCleared();
+            super.onCleared();
         } else {
             /* 如果 onCleared() 方法没有被触发过，那么顺序是正确的. */
-            origin.beforeViewDestroy();
+            super.beforeViewDestroy();
         }
-    }
-
-    @Override
-    public void onDetachView(@NonNull V view) {
-        origin.onDetachView(view);
     }
 
     @Override
@@ -125,13 +93,12 @@ public final class LifecycleOrderFixDelegate<V extends IView> implements Present
 
         /* 判断 beforeViewDestroy() 是否被调用过.  */
         //noinspection StatementWithEmptyBody
-        if (isBeforeViewDestroyCalled) {
+        if (isOnViewDestroyCalled) {
             /* 如果 beforeViewDestroy() 被调用过，说明顺序正常. */
-            origin.onCleared();
+            super.onCleared();
         } else {
-            /* 如果 beforeViewDestroy() 没有被调用过，说明顺序不正常，此处不应该触发 origin.onCleared()，而是等 beforeViewDestroy() 被调用时帮忙补发 origin.onCleared(). */
+            /* 如果 beforeViewDestroy() 没有被调用过，说明顺序不正常，此处不应该触发 super.onCleared()，而是等 beforeViewDestroy() 被调用时帮忙补发 super.onCleared(). */
         }
-
     }
 
 

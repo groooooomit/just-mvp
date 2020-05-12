@@ -3,11 +3,21 @@ package com.bfu.just.mvp.core.presenter
 import android.util.Log
 import androidx.annotation.CallSuper
 import just.mvp.BasePresenter
-import just.mvp.IView
+import just.mvp.base.IView
 
 open class LogPresenter<V : IView> : BasePresenter<V>() {
 
     private val tag = "LifeCycle"
+
+    @CallSuper
+    override fun onInitialize() {
+        Log.d(tag, "${this.javaClass.simpleName} -${hashCode()} >>>> onInitialize")
+    }
+
+    @CallSuper
+    override fun onAttachView(view: V) {
+        Log.d(tag, "${this.javaClass.simpleName} -${hashCode()} >>>> onAttachView")
+    }
 
     @CallSuper
     override fun afterViewCreate() {
@@ -21,43 +31,32 @@ open class LogPresenter<V : IView> : BasePresenter<V>() {
 
     @CallSuper
     override fun afterViewResume() {
-        Log.d(tag,"${this.javaClass.simpleName} -${hashCode()} >>>> afterViewResume")
+        Log.d(tag, "${this.javaClass.simpleName} -${hashCode()} >>>> afterViewResume")
     }
 
     @CallSuper
     override fun beforeViewPause() {
-        Log.d(tag,"${this.javaClass.simpleName} -${hashCode()} >>>> beforeViewPause")
+        Log.d(tag, "${this.javaClass.simpleName} -${hashCode()} >>>> beforeViewPause")
     }
 
     @CallSuper
     override fun beforeViewStop() {
-        Log.d(tag,"${this.javaClass.simpleName} -${hashCode()} >>>> beforeViewStop")
+        Log.d(tag, "${this.javaClass.simpleName} -${hashCode()} >>>> beforeViewStop")
     }
 
     @CallSuper
     override fun beforeViewDestroy() {
-        Log.d(tag,"${this.javaClass.simpleName} -${hashCode()} >>>> beforeViewDestroy")
-    }
-
-    @CallSuper
-    override fun onInitialize() {
-        Log.d(tag,"${this.javaClass.simpleName} -${hashCode()} >>>> onInitialize")
-    }
-
-    @CallSuper
-    override fun onCleared() {
-        super.onCleared()
-        Log.d(tag,"${this.javaClass.simpleName} -${hashCode()} >>>> onCleared")
-    }
-
-    @CallSuper
-    override fun onAttachView(view: V) {
-        Log.d(tag,"${this.javaClass.simpleName} -${hashCode()} >>>> onAttachView")
+        Log.d(tag, "${this.javaClass.simpleName} -${hashCode()} >>>> beforeViewDestroy")
     }
 
     @CallSuper
     override fun onDetachView(view: V) {
-        Log.d(tag,"${this.javaClass.simpleName} -${hashCode()} >>>> onDetachView")
-
+        Log.d(tag, "${this.javaClass.simpleName} -${hashCode()} >>>> onDetachView")
     }
+
+    @CallSuper
+    override fun onCleared() {
+        Log.d(tag, "${this.javaClass.simpleName} -${hashCode()} >>>> onCleared")
+    }
+
 }

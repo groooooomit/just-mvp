@@ -16,5 +16,7 @@ class MainActivity : PresenterActivity<MainPresenter>(), MainContract.View {
 
     override fun showToken(token: String?) {
         txt_token.text = token ?: "--"
+        presenter.afterViewCreate()
     }
+
 }

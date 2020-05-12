@@ -8,8 +8,6 @@ import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 
-import just.mvp.ViewData;
-
 public final class BundleData implements ViewData {
 
     @NonNull

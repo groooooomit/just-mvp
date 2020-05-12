@@ -4,55 +4,25 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 
-import just.mvp.IPresenter;
-import just.mvp.IView;
+import just.mvp.lifecycle.PresenterLifecycle;
+import just.mvp.uirun.UiActionExecutor;
 
-/**
- * {@link IPresenter} 的默认实现.
- *
- * @param <V> View
- */
-public abstract class AbstractPresenter<V extends IView> implements IPresenter<V> {
+public interface AbstractPresenter<V extends IView> extends IPresenter<V>, PresenterLifecycle<V>, UiActionExecutor<V> {
 
     /**
-     * Presenter 被 new 出来后立即装载 Application，使得在 Presenter 中能够方便地获取到 Application 对象
+     * 直接获取 View 的引用，一般情况下应该使用 {@link AbstractPresenter#getView()}
      */
     @Nullable
-    private Application application;
+    V getRawView();
 
     /**
-     * Presenter 持有 View 的引用
+     * 获取全局 Application 对象
      */
-    @Nullable
-    private V view;
-
-    @Override
-    public final void initialize(@NonNull Application application) {
-        this.application = application;
-        performOnInitialize();
-    }
-
-    @Override
-    public final void attachView(@NonNull V view) {
-        this.view = view;
-        performOnAttachView(view);
-    }
-
-    @Override
-    public final void detachView() {
-        if (view != null) {
-            performOnDetachView(view);
-            this.view = null;
-        }
-    }
-
-    @Override
-    public final void cleared() {
-        performOnCleared();
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
+    @NonNull
+    Application getApplication();
 
     /**
      * 安全地获取 View 的引用，当 view 处于 active 状态时，才能够得到它的引用，否则返回 null
@@ -62,50 +32,58 @@ public abstract class AbstractPresenter<V extends IView> implements IPresenter<V
      * 通常情况下，如果 View 非 active，那么不应该对 View 进行任何操纵
      */
     @Nullable
-    protected final V peekActiveView() {
+    default V getView() {
+        final V view = getRawView();
         return (null != view && view.isActive()) ? view : null;
     }
 
     /**
-     * 不安全地获取 View 的引用，满足某些极端场景需要在 view 非 active 的时候使用 view.
+     * 根据 View 自身类型获取 ViewModelProvider
      */
-    @Deprecated
     @Nullable
-    protected final V getRawView() {
-        return view;
+    default ViewModelProvider getViewModelProvider() {
+        final V view = getView();
+        return null != view ? new ViewModelProvider(view, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())) : null;
     }
 
     /**
-     * 获取全局 Application 对象
+     * 获取 View 所属 Activity 的 ViewModelProvider
      */
-    @NonNull
-    protected final Application getApplication() {
-        if (null == application) {
-            throw new RuntimeException("You should getApplication since onInitialize(). ");
-        }
-        return application;
+    @Nullable
+    default ViewModelProvider getActivityViewModelProvider() {
+        final V view = getView();
+        return null != view ? new ViewModelProvider(view.getActivity(), ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())) : null;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    /**
+     * 判断 View 是否处于 active 状态
+     */
+    default boolean isViewActive() {
+        return null != getView();
+    }
 
     /**
-     * Presenter 创建并持有 Application 对象后回调
+     * 判断 view 是否处于 created 状态
      */
-    protected abstract void performOnInitialize();
+    default boolean isViewCreated() {
+        final V view = getView();
+        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.CREATED);
+    }
 
     /**
-     * Presenter 持有 View 的引用后回调
+     * 判断 view 是否处于 started 状态
      */
-    protected abstract void performOnAttachView(@NonNull V view);
+    default boolean isViewStarted() {
+        final V view = getView();
+        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
+    }
 
     /**
-     * Presenter 在即将解除 View 的引用前回调
+     * 判断 view 是否处于 resumed 状态
      */
-    protected abstract void performOnDetachView(@NonNull V view);
-
-    /**
-     * Presenter 跟随 ViewModel 一同被回收时回调
-     */
-    protected abstract void performOnCleared();
+    default boolean isViewResumed() {
+        final V view = getView();
+        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
+    }
 
 }

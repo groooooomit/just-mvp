@@ -13,11 +13,8 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        // step 1: 引入插件
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-
-        // step 2: 在 local.properties 中配置 bintray.user 和 bintray.apikey
     }
 }
 

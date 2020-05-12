@@ -6,12 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -19,18 +16,13 @@ import androidx.fragment.app.Fragment;
  * 1、重写 {@link SimpleFragment#getLayoutResId()} 方法
  * 2、在类上增加 {@link LayoutResId} 注解
  */
-// @LayoutResId(R.layout.fragment_xxx)
 public class SimpleFragment extends Fragment {
-
-    // --------------------------------------------------------------------------------------------------------------------------------------------------
 
     @LayoutRes
     protected int getLayoutResId() {
         final LayoutResId layoutResId = this.getClass().getAnnotation(LayoutResId.class);
         return null == layoutResId ? 0 : layoutResId.value();
     }
-
-    // --------------------------------------------------------------------------------------------------------------------------------------------------
 
     @Nullable
     @Override
@@ -43,14 +35,6 @@ public class SimpleFragment extends Fragment {
         } else {
             return null;
         }
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------------------------------
-
-    @ColorInt
-    protected final int getColour(@ColorRes int colorId) {
-        //noinspection ConstantConditions
-        return ContextCompat.getColor(getContext(), colorId);
     }
 
 }

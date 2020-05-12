@@ -40,7 +40,7 @@ class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Present
                 runOnUi {
                     it.apply {
                         showLoginEnd()
-                        snack("用户名或密码错误")
+                        toastLong("用户名或密码错误")
                     }
                 }
             }

@@ -2,7 +2,7 @@ package com.bfu.just.mvp.core.presenter
 
 import android.os.Bundle
 import android.util.Log
-import just.mvp.IPresenter
+import just.mvp.base.IPresenter
 import just.mvp.PresenterActivity
 
 abstract class LogPresenterActivity< P : IPresenter<*>> : PresenterActivity<P>() {

@@ -7,12 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 /**
@@ -20,18 +17,13 @@ import androidx.fragment.app.DialogFragment;
  * 1、重写 {@link SimpleDialogFragment#getLayoutResId()} 方法
  * 2、在类上增加 {@link LayoutResId} 注解
  */
-// @LayoutResId(R.layout.fragment_dialog_xxx)
 public class SimpleDialogFragment extends DialogFragment {
-
-    // --------------------------------------------------------------------------------------------------------------------------------------------------
 
     @LayoutRes
     protected int getLayoutResId() {
         final LayoutResId layoutResId = this.getClass().getAnnotation(LayoutResId.class);
         return null == layoutResId ? 0 : layoutResId.value();
     }
-
-    // --------------------------------------------------------------------------------------------------------------------------------------------------
 
     @Nullable
     @Override
@@ -55,7 +47,7 @@ public class SimpleDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        // 在 onStart 中设置才有效
+        // 在 onStart 后对 window 修改宽高才能够生效
         final Dialog dialog = getDialog();
         if (dialog != null) {
             final Window window = dialog.getWindow();
@@ -66,17 +58,9 @@ public class SimpleDialogFragment extends DialogFragment {
     }
 
     /**
-     * 重置 window 的size
+     * 可以在此重置 window 的 size
      */
     public void onWindowPrepare(@NonNull Window window) {
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------------------------------
-
-    @ColorInt
-    protected int getColour(@ColorRes int colorId) {
-        //noinspection ConstantConditions
-        return ContextCompat.getColor(getContext(), colorId);
     }
 
 }

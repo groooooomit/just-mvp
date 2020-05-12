@@ -2,7 +2,7 @@ package com.bfu.just.mvp.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import just.mvp.IPresenter
+import just.mvp.base.IPresenter
 import just.mvp.PresenterFragment
 
 abstract class LogFragment<P : IPresenter<*>> : PresenterFragment<P>() {

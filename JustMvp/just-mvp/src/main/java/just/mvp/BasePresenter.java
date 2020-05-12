@@ -1,135 +1,131 @@
 package just.mvp;
 
-
+import android.app.Application;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.UiThread;
-import androidx.lifecycle.Lifecycle;
 
-import just.mvp.base.LifecyclePresenter;
+import just.mvp.base.AbstractPresenter;
+import just.mvp.base.IView;
+import just.mvp.lifecycle.PresenterAutoClearAllUiRunsWrapper;
+import just.mvp.lifecycle.PresenterAutoDetachViewWrapper;
+import just.mvp.lifecycle.PresenterLifecycleOrderFixWrapper;
+import just.mvp.lifecycle.PresenterLifecycleTrigger;
+import just.mvp.uirun.UiActionExecutorImpl;
+import just.mvp.uirun.ViewRunnable;
 
 /**
- * 内置一个 ui handler，用来便捷地更新 UI
+ * Presenter 的基类
+ * <p>
+ * 能够感知 View 生命周期的 Presenter，对 View 生命周期的感知通过 {@link androidx.lifecycle.DefaultLifecycleObserver} 实现
+ * ，attach view 后注册 view 的生命周期监听器，当 view destroy 后主动 detach view 释放 view 的引用
+ * <p>
+ * {@link PresenterLifecycleTrigger} 用于触发 Presenter 相关生命周期方法
+ * <p>
+ * {@link PresenterLifecycleOrderFixWrapper} 用于修正生命周期回调顺序
+ * <p>
+ * {@link PresenterAutoDetachViewWrapper} 用于在 Activity 或 Fragment onDestroy 之前触发 detachView 来解除 Presenter 和 View 的引用
+ * <p>
+ * {@link PresenterAutoClearAllUiRunsWrapper} 用于在 ViewModel 销毁之前清除 pending 的 action
  *
- * @param <V> View
+ * @param <V>
  */
-public class BasePresenter<V extends IView> extends LifecyclePresenter<V> {
+public class BasePresenter<V extends IView> implements AbstractPresenter<V> {
 
     /**
-     * 访问 View 的入口方法，子类可以重写以实现自己的需求
+     * Presenter 持有对 View 的引用
      */
     @Nullable
-    protected V getView() {
-        return peekActiveView();
-    }
+    private V view;
 
     /**
-     * 内置一个发送延时任务的 Handler
+     * Presenter 被 new 出来后立即装载 Application，使得在 Presenter 中能够方便地获取到 Application 对象
+     */
+    @Nullable
+    private Application application;
+
+    /**
+     * 便捷地更新 UI
      */
     @NonNull
-    private final Handler uiHandler = new Handler(Looper.getMainLooper());
+    private final UiActionExecutorImpl<V> vUiActionExecutorImpl = new UiActionExecutorImpl<>(this::getView);
 
     /**
-     * 判断是否是 UI 线程
+     * 生命周期触发源
      */
-    protected final boolean isMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
-    }
+    @NonNull
+    private final PresenterLifecycleTrigger<V> trigger = new PresenterLifecycleTrigger<>(new PresenterLifecycleOrderFixWrapper<>(new PresenterAutoDetachViewWrapper<>(this, new PresenterAutoClearAllUiRunsWrapper<>(this, this))));
 
-    /**
-     * 如果 View 处于 active 状态，就执行 action
-     */
-    @UiThread
-    private void runIfViewActive(@NonNull ViewRunnable<V> action) {
-        final V view = peekActiveView();
-        if (null != view) {
-            action.run(view);
-        }
-    }
-
-    /**
-     * 在 UI 线程执行，且 View 处于 active 状态
-     */
-    protected final void runOnUi(@NonNull ViewRunnable<V> action) {
-        if (isMainThread()) {
-            runIfViewActive(action);
-        } else {
-            uiHandler.post(() -> runIfViewActive(action));
-        }
-    }
-
-    /**
-     * 在 UI 线程延时执行，且 View 处于 active 状态
-     */
-    protected final void runOnUi(long delay, @NonNull ViewRunnable<V> action) {
-        uiHandler.postDelayed(() -> runIfViewActive(action), delay);
-    }
-
-    /**
-     * 在 UI 线程延时执行，且 View 处于 active 状态
-     */
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    protected final void runOnUi(@NonNull Object token, long delay, @NonNull ViewRunnable<V> action) {
-        uiHandler.postDelayed(() -> runIfViewActive(action), token, delay);
-    }
-
-    /**
-     * 清空 uiHandler 发出的任务
-     */
-    protected final void clearAllUiRuns() {
-        uiHandler.removeCallbacksAndMessages(null);
-    }
-
-    /**
-     * 清空指定的尚未执行的任务
-     */
-    protected final void clearUiRuns(@NonNull Object token) {
-        uiHandler.removeCallbacksAndMessages(token);
-    }
-
-    /**
-     * 清除尚未执行的 runnable.
-     */
-    @CallSuper
+    @Nullable
     @Override
-    public void onCleared() {
-        clearAllUiRuns();
+    public V getRawView() {
+        return view;
     }
 
-    /**
-     * 判断 view 是否处于 created 状态
-     *
-     * @return 返回 true 表示 View 处于 created 状态
-     */
-    protected final boolean isViewCreated() {
-        final V view = peekActiveView();
-        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.CREATED);
+    @NonNull
+    @Override
+    public Application getApplication() {
+        if (null == application) {
+            throw new RuntimeException("Presenter doesn't initialize!");
+        }
+        return application;
     }
 
-    /**
-     * 判断 view 是否处于 started 状态
-     *
-     * @return 返回 true 表示 View 处于 started 状态
-     */
-    protected final boolean isViewStarted() {
-        final V view = peekActiveView();
-        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
+    ///////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public final void initialize(@NonNull Application application) {
+        this.application = application;
+        trigger.onInitialize();
     }
 
-    /**
-     * 判断 view 是否处于 resumed 状态
-     *
-     * @return 返回 true 表示 View 处于 resumed 状态
-     */
-    protected final boolean isViewResumed() {
-        final V view = peekActiveView();
-        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
+    @Override
+    public final void attachView(@NonNull V view) {
+        this.view = view;
+        trigger.onAttachView(view);
+    }
+
+    @Override
+    public final void detachView() {
+        if (null != view) {
+            trigger.onDetachView(view);
+            view = null;
+        }
+    }
+
+    @Override
+    public final void cleared() {
+        trigger.onCleared();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void runOnUi(@NonNull ViewRunnable<V> action) {
+        vUiActionExecutorImpl.runOnUi(action);
+    }
+
+    @Override
+    public void runOnUi(long delay, @NonNull ViewRunnable<V> action) {
+        vUiActionExecutorImpl.runOnUi(delay, action);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    @Override
+    public void runOnUi(@NonNull Object token, long delay, @NonNull ViewRunnable<V> action) {
+        vUiActionExecutorImpl.runOnUi(token, delay, action);
+    }
+
+    @Override
+    public void clearUiRuns(@NonNull Object token) {
+        vUiActionExecutorImpl.clearUiRuns(token);
+    }
+
+    @Override
+    public void clearAllUiRuns() {
+        vUiActionExecutorImpl.clearAllUiRuns();
     }
 
 }

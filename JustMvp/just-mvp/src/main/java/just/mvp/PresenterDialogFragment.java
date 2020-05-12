@@ -1,19 +1,17 @@
 package just.mvp;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import just.mvp.widget.SimpleDialogFragment;
 import just.mvp.base.BundleData;
+import just.mvp.base.IPresenter;
+import just.mvp.base.IView;
 import just.mvp.base.Presenters;
+import just.mvp.base.ViewData;
+import just.mvp.widget.SimpleDialogFragment;
 
 public abstract class PresenterDialogFragment<P extends IPresenter> extends SimpleDialogFragment implements IView {
     /**
@@ -49,8 +47,7 @@ public abstract class PresenterDialogFragment<P extends IPresenter> extends Simp
      */
     @NonNull
     protected final P getPresenter() {
-        //noinspection unchecked
-        return (P) Presenters.get(this);
+        return Presenters.get(this);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -69,47 +66,6 @@ public abstract class PresenterDialogFragment<P extends IPresenter> extends Simp
     @Override
     public boolean isActive() {
         return isAdded() && !isStateSaved();
-    }
-
-    @Override
-    public void toast(@NonNull String msg) {
-        final Context context = getContext();
-        if (null != context) {
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void toastLong(@NonNull String msg) {
-        final Context context = getContext();
-        if (null != context) {
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void snack(@NonNull String msg) {
-        final View view = getView();
-        if (null != view) {
-            Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void snackLong(@NonNull String msg) {
-        final View view = getView();
-        if (null != view) {
-            Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void snackIndefinite(@NonNull String msg) {
-        final View view = getView();
-        if (view != null) {
-            final Snackbar make = Snackbar.make(view, msg, Snackbar.LENGTH_INDEFINITE);
-            make.setAction("知道了", v -> make.dismiss()).show();
-        }
     }
 
 }

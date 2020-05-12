@@ -9,8 +9,6 @@ import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 
-import just.mvp.ViewData;
-
 public final class IntentData implements ViewData {
 
     @NonNull

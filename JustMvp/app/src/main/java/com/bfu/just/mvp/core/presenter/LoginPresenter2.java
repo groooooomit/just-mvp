@@ -4,28 +4,35 @@ import com.bfu.just.mvp.core.contract.LoginContract;
 
 import org.jetbrains.annotations.Nullable;
 
-import just.mvp.ProxyPresenter;
+import java.util.Objects;
+
+import just.mvp.BasePresenter;
 
 /**
  * {@link LoginPresenter} 的 ProxyPresenter 版本
  */
-public class LoginPresenter2 extends ProxyPresenter<LoginContract.View> implements LoginContract.Presenter {
+public class LoginPresenter2 extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
 
     @Override
     public void login(@Nullable String username, @Nullable String password) {
-        getView().showLoginStart();
+        // Optional.ofNullable(getView()).ifPresent(LoginContract.View::showLoginStart);
+        Objects.requireNonNull(getView()).showLoginStart();
 
         // check username
         if (null == username || username.isEmpty()) {
-            getView().showLoginEnd();
-            getView().toast("用户名不能为空");
+            runOnUi(view -> {
+                view.showLoginEnd();
+                view.toast("用户名不能为空");
+            });
             return;
         }
 
         // check password
         if (null == password || password.isEmpty()) {
-            getView().showLoginEnd();
-            getView().toast("密码不能为空");
+            runOnUi(view -> {
+                view.showLoginEnd();
+                view.toast("密码不能为空");
+            });
             return;
         }
 
@@ -45,7 +52,7 @@ public class LoginPresenter2 extends ProxyPresenter<LoginContract.View> implemen
             } else {
                 runOnUi(it -> {
                     it.showLoginEnd();
-                    it.snack("用户名或密码错误");
+                    it.toastLong("用户名或密码错误");
                 });
             }
         }).start();
