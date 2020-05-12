@@ -4,8 +4,6 @@ import com.bfu.just.mvp.core.contract.LoginContract;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 import just.mvp.BasePresenter;
 
 /**
@@ -15,8 +13,7 @@ public class LoginPresenter2 extends BasePresenter<LoginContract.View> implement
 
     @Override
     public void login(@Nullable String username, @Nullable String password) {
-        // Optional.ofNullable(getView()).ifPresent(LoginContract.View::showLoginStart);
-        Objects.requireNonNull(getView()).showLoginStart();
+        runOnUi(LoginContract.View::showLoginStart);
 
         // check username
         if (null == username || username.isEmpty()) {

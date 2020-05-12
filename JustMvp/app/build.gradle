@@ -40,8 +40,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     /* import just-mvp */
-    implementation project(path: ':just-mvp')
-//    implementation 'com.bfu:just-mvp:1.0.6'
+//    implementation project(path: ':just-mvp')
+    implementation 'com.bfu:just-mvp:1.0.8'
     implementation 'com.bfu:just-optional:1.0.0'
 
     /* 内存泄漏检查 */

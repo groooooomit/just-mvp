@@ -1,5 +1,6 @@
 package com.bfu.just.mvp.core.presenter
 
+import com.bfu.just.mvp.common.LogPresenter
 import com.bfu.just.mvp.core.contract.LoginContract
 
 class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Presenter {

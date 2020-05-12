@@ -2,11 +2,11 @@ package com.bfu.just.mvp.ui.activity
 
 import android.os.Bundle
 import com.bfu.just.mvp.R
-import com.bfu.just.mvp.core.presenter.LogActivity
+import com.bfu.just.mvp.common.LogActivity
 import com.bfu.just.mvp.ui.fragment.LoginFragment
 
 
-class HomeActivityActivity : LogActivity() {
+class HomeActivity : LogActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

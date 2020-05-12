@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.bfu.just.mvp.R
+import com.bfu.just.mvp.common.LogPresenterFragment
 import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.presenter.LoginPresenter
 import com.bfu.just.mvp.ui.activity.MainActivity
@@ -11,7 +12,7 @@ import just.mvp.widget.LayoutResId
 import kotlinx.android.synthetic.main.activity_login.*
 
 @LayoutResId(R.layout.fragment_login)
-class LoginFragment : LogFragment<LoginPresenter>(), LoginContract.View {
+class LoginFragment : LogPresenterFragment<LoginPresenter>(), LoginContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         login.setOnClickListener {
@@ -42,7 +43,5 @@ class LoginFragment : LogFragment<LoginPresenter>(), LoginContract.View {
             .let { startActivity(it) }
         activity?.finish()
     }
-
-    override val width = 100
 
 }

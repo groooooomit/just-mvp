@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.bfu.just.mvp.R
 import com.bfu.just.mvp.core.contract.LoginContract
-import com.bfu.just.mvp.core.presenter.LogPresenterActivity
+import com.bfu.just.mvp.common.LogPresenterActivity
 import com.bfu.just.mvp.core.presenter.LoginPresenter
 import kotlinx.android.synthetic.main.activity_login.*
 

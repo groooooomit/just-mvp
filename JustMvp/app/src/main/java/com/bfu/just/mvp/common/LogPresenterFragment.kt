@@ -1,11 +1,11 @@
-package com.bfu.just.mvp.ui.fragment
+package com.bfu.just.mvp.common
 
 import android.os.Bundle
 import android.util.Log
 import just.mvp.base.IPresenter
 import just.mvp.PresenterFragment
 
-abstract class LogFragment<P : IPresenter<*>> : PresenterFragment<P>() {
+abstract class LogPresenterFragment<P : IPresenter<*>> : PresenterFragment<P>() {
 
     private val label = "LifeCycle"
 

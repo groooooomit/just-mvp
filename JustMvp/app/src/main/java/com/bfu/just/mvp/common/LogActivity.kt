@@ -1,11 +1,10 @@
-package com.bfu.just.mvp.core.presenter
+package com.bfu.just.mvp.common
 
 import android.os.Bundle
 import android.util.Log
-import just.mvp.base.IPresenter
-import just.mvp.PresenterActivity
+import androidx.appcompat.app.AppCompatActivity
 
-abstract class LogPresenterActivity< P : IPresenter<*>> : PresenterActivity<P>() {
+abstract class LogActivity : AppCompatActivity() {
     private val tag = "LifeCycle"
 
     override fun onCreate(savedInstanceState: Bundle?) {

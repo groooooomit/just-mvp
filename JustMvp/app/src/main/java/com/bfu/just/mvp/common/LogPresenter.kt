@@ -1,4 +1,4 @@
-package com.bfu.just.mvp.core.presenter
+package com.bfu.just.mvp.common
 
 import android.util.Log
 import androidx.annotation.CallSuper

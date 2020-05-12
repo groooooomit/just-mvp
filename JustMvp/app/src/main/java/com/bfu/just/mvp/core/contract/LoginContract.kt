@@ -13,8 +13,6 @@ interface LoginContract {
         fun showLoginEnd()
 
         fun goMainPage(token: String)
-
-        val width: Int
     }
 
     interface Presenter : IPresenter<View> {
