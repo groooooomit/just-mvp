@@ -10,6 +10,10 @@ import androidx.lifecycle.ViewModelProvider;
 import just.mvp.lifecycle.PresenterLifecycle;
 import just.mvp.uirun.UiActionExecutor;
 
+/**
+ * 申明 Presenter 对外暴露的方法
+ * @param <V>
+ */
 public interface AbstractPresenter<V extends IView> extends IPresenter<V>, PresenterLifecycle<V>, UiActionExecutor<V> {
 
     /**

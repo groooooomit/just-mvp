@@ -1,9 +1,9 @@
 package com.bfu.just.mvp.core.presenter
 
-import com.bfu.just.mvp.common.LogPresenter
 import com.bfu.just.mvp.core.contract.LoginContract
+import just.mvp.BasePresenter
 
-class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Presenter {
+class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presenter {
 
     override fun login(username: String?, password: String?) {
         view?.showLoginStart()
@@ -47,4 +47,5 @@ class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Present
             }
         }.start()
     }
+
 }

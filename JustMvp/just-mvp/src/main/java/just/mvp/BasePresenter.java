@@ -50,7 +50,7 @@ public class BasePresenter<V extends IView> implements AbstractPresenter<V> {
      * 便捷地更新 UI
      */
     @NonNull
-    private final UiActionExecutorImpl<V> vUiActionExecutorImpl = new UiActionExecutorImpl<>(this::getView);
+    private final UiActionExecutorImpl<V> uiActionExecutorImpl = new UiActionExecutorImpl<>(this::getView);
 
     /**
      * 生命周期触发源
@@ -104,28 +104,28 @@ public class BasePresenter<V extends IView> implements AbstractPresenter<V> {
 
     @Override
     public void runOnUi(@NonNull ViewRunnable<V> action) {
-        vUiActionExecutorImpl.runOnUi(action);
+        uiActionExecutorImpl.runOnUi(action);
     }
 
     @Override
     public void runOnUi(long delay, @NonNull ViewRunnable<V> action) {
-        vUiActionExecutorImpl.runOnUi(delay, action);
+        uiActionExecutorImpl.runOnUi(delay, action);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void runOnUi(@NonNull Object token, long delay, @NonNull ViewRunnable<V> action) {
-        vUiActionExecutorImpl.runOnUi(token, delay, action);
+        uiActionExecutorImpl.runOnUi(token, delay, action);
     }
 
     @Override
     public void clearUiRuns(@NonNull Object token) {
-        vUiActionExecutorImpl.clearUiRuns(token);
+        uiActionExecutorImpl.clearUiRuns(token);
     }
 
     @Override
     public void clearAllUiRuns() {
-        vUiActionExecutorImpl.clearAllUiRuns();
+        uiActionExecutorImpl.clearAllUiRuns();
     }
 
 }
