@@ -2,7 +2,6 @@ package just.mvp;
 
 import android.os.Bundle;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -19,10 +18,9 @@ public abstract class PresenterDialogFragment<P extends IPresenter> extends Simp
      */
     private final Class<P> presenterType = Presenters.getPresenterType(this.getClass());
 
-    @CallSuper
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         /* view 和 presenter 进行绑定. */
         Presenters.bind(this, this::onCreatePresenter);

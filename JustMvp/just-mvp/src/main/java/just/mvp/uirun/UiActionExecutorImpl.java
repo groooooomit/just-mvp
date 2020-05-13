@@ -27,7 +27,7 @@ public class UiActionExecutorImpl<V extends IView> implements UiActionExecutor<V
 
     @UiThread
     private void runIfViewActive(@NonNull ViewRunnable<V> action) {
-        final V view = viewProvider.getView();
+        final V view = viewProvider.provideView();
         if (null != view && view.isActive()) {
             action.run(view);
         }
@@ -66,7 +66,7 @@ public class UiActionExecutorImpl<V extends IView> implements UiActionExecutor<V
     public interface ViewProvider<V extends IView> {
 
         @Nullable
-        V getView();
+        V provideView();
     }
 
 }

@@ -6,13 +6,13 @@ import android.view.View
 import com.bfu.just.mvp.R
 import com.bfu.just.mvp.common.LogPresenterFragment
 import com.bfu.just.mvp.core.contract.LoginContract
-import com.bfu.just.mvp.core.presenter.LoginPresenter3
+import com.bfu.just.mvp.core.presenter.LoginPresenter
 import com.bfu.just.mvp.ui.activity.MainActivity
 import just.mvp.widget.LayoutResId
 import kotlinx.android.synthetic.main.activity_login.*
 
 @LayoutResId(R.layout.fragment_login)
-class LoginFragment : LogPresenterFragment<LoginPresenter3>(), LoginContract.View {
+class LoginFragment : LogPresenterFragment<LoginPresenter>(), LoginContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         login.setOnClickListener {
