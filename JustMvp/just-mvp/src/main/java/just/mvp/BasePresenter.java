@@ -50,7 +50,7 @@ public class BasePresenter<V extends IView> implements AbstractPresenter<V> {
      * 便捷地更新 UI
      */
     @NonNull
-    private final UiActionExecutorImpl<V> uiActionExecutorImpl = new UiActionExecutorImpl<>(this::getView);
+    private final UiActionExecutorImpl<V> uiActionExecutorImpl = new UiActionExecutorImpl<>(this::getRawView);
 
     /**
      * 生命周期触发源
@@ -60,20 +60,18 @@ public class BasePresenter<V extends IView> implements AbstractPresenter<V> {
 
     @Nullable
     @Override
-    public V getRawView() {
+    public final V getRawView() {
         return view;
     }
 
     @NonNull
     @Override
-    public Application getApplication() {
+    public final Application getApplication() {
         if (null == application) {
             throw new RuntimeException("Presenter doesn't initialize!");
         }
         return application;
     }
-
-    ///////////////////////////////////////////////////////////////////////////
 
     @Override
     public final void initialize(@NonNull Application application) {
@@ -100,31 +98,29 @@ public class BasePresenter<V extends IView> implements AbstractPresenter<V> {
         trigger.onCleared();
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-
     @Override
-    public void runOnUi(@NonNull ViewRunnable<V> action) {
+    public final void runOnUi(@NonNull ViewRunnable<V> action) {
         uiActionExecutorImpl.runOnUi(action);
     }
 
     @Override
-    public void runOnUi(long delay, @NonNull ViewRunnable<V> action) {
+    public final void runOnUi(long delay, @NonNull ViewRunnable<V> action) {
         uiActionExecutorImpl.runOnUi(delay, action);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
-    public void runOnUi(@NonNull Object token, long delay, @NonNull ViewRunnable<V> action) {
+    public final void runOnUi(@NonNull Object token, long delay, @NonNull ViewRunnable<V> action) {
         uiActionExecutorImpl.runOnUi(token, delay, action);
     }
 
     @Override
-    public void clearUiRuns(@NonNull Object token) {
+    public final void clearUiRuns(@NonNull Object token) {
         uiActionExecutorImpl.clearUiRuns(token);
     }
 
     @Override
-    public void clearAllUiRuns() {
+    public final void clearAllUiRuns() {
         uiActionExecutorImpl.clearAllUiRuns();
     }
 

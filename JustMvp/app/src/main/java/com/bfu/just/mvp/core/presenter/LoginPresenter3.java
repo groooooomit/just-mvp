@@ -4,32 +4,28 @@ import com.bfu.just.mvp.core.contract.LoginContract;
 
 import org.jetbrains.annotations.Nullable;
 
-import just.mvp.BasePresenter;
+import just.mvp.ProxyViewPresenter;
 
 /**
- * {@link LoginPresenter} 的 runOnUi 版本
+ * {@link LoginPresenter} 的 ProxyViewPresenter 版本
  */
-public class LoginPresenter2 extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
+public class LoginPresenter3 extends ProxyViewPresenter<LoginContract.View> implements LoginContract.Presenter {
 
     @Override
     public void login(@Nullable String username, @Nullable String password) {
-        runOnUi(LoginContract.View::showLoginStart);
+        getView().showLoginStart();
 
         // check username
         if (null == username || username.isEmpty()) {
-            runOnUi(view -> {
-                view.showLoginEnd();
-                view.toast("用户名不能为空");
-            });
+            getView().showLoginEnd();
+            getView().toast("用户名不能为空");
             return;
         }
 
         // check password
         if (null == password || password.isEmpty()) {
-            runOnUi(view -> {
-                view.showLoginEnd();
-                view.toast("密码不能为空");
-            });
+            getView().showLoginEnd();
+            getView().toast("密码不能为空");
             return;
         }
 

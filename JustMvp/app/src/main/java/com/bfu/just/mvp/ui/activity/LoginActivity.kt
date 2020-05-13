@@ -42,9 +42,4 @@ class LoginActivity : LogPresenterActivity<LoginPresenter>(), LoginContract.View
             .let { startActivity(it) }
         finish()
     }
-
-    override val width: Int
-        get() = 100
-
-
 }

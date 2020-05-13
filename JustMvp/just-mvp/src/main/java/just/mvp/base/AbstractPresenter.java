@@ -12,6 +12,7 @@ import just.mvp.uirun.UiActionExecutor;
 
 /**
  * 申明 Presenter 对外暴露的方法
+ *
  * @param <V>
  */
 public interface AbstractPresenter<V extends IView> extends IPresenter<V>, PresenterLifecycle<V>, UiActionExecutor<V> {
@@ -37,8 +38,8 @@ public interface AbstractPresenter<V extends IView> extends IPresenter<V>, Prese
      */
     @Nullable
     default V getView() {
-        final V view = getRawView();
-        return (null != view && view.isActive()) ? view : null;
+        final V rawView = getRawView();
+        return null != rawView && rawView.isActive() ? rawView : null;
     }
 
     /**
@@ -46,8 +47,8 @@ public interface AbstractPresenter<V extends IView> extends IPresenter<V>, Prese
      */
     @Nullable
     default ViewModelProvider getViewModelProvider() {
-        final V view = getView();
-        return null != view ? new ViewModelProvider(view, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())) : null;
+        final V rawView = getRawView();
+        return null != rawView && rawView.isActive() ? new ViewModelProvider(rawView, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())) : null;
     }
 
     /**
@@ -55,39 +56,40 @@ public interface AbstractPresenter<V extends IView> extends IPresenter<V>, Prese
      */
     @Nullable
     default ViewModelProvider getActivityViewModelProvider() {
-        final V view = getView();
-        return null != view ? new ViewModelProvider(view.getActivity(), ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())) : null;
+        final V rawView = getRawView();
+        return null != rawView && rawView.isActive() ? new ViewModelProvider(rawView.getActivity(), ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())) : null;
     }
 
     /**
      * 判断 View 是否处于 active 状态
      */
     default boolean isViewActive() {
-        return null != getView();
+        final V rawView = getRawView();
+        return null != rawView && rawView.isActive();
     }
 
     /**
      * 判断 view 是否处于 created 状态
      */
     default boolean isViewCreated() {
-        final V view = getView();
-        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.CREATED);
+        final V rawView = getRawView();
+        return null != rawView && rawView.isActive() && rawView.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.CREATED);
     }
 
     /**
      * 判断 view 是否处于 started 状态
      */
     default boolean isViewStarted() {
-        final V view = getView();
-        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
+        final V rawView = getRawView();
+        return null != rawView && rawView.isActive() && rawView.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
     }
 
     /**
      * 判断 view 是否处于 resumed 状态
      */
     default boolean isViewResumed() {
-        final V view = getView();
-        return null != view && view.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
+        final V rawView = getRawView();
+        return null != rawView && rawView.isActive() && rawView.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
     }
 
 }
