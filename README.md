@@ -73,6 +73,6 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
     ![屏幕旋转 view 被销毁又重建时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/rotate_page.gif "屏幕旋转 view 被销毁又重建时 presenter 的生命周期流程")  
 
-    > 可以看到由于使用了 ViewModel，presenter 并没有跟随 view 一同被销毁又重建，于是 view 重建后能很快恢复之前的状态。如下示例：  
+    > 可以看到由于使用了 ViewModel，presenter 并没有跟随 view 一同被销毁又重建，于是 view 重建后能很快恢复之前的状态。如下[示例](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/core/presenter/LoginPresenter.kt)：  
 
     ![屏幕旋转](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/screen_rotate.gif "屏幕旋转")  
