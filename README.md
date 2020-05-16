@@ -61,9 +61,12 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 ![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png)  
 
 ## [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 生命周期
-* presenter 生命周期一共 10 个方法：onInitialize -> onAttachView -> afterViewCreate -> afterViewStart -> afterViewResume -> beforeViewPause -> beforeViewStop -> beforeViewDestroy -> onDetachView -> onCleared  
+* presenter 生命周期一共 10 个方法：onInitialize -> onAttachView -> afterViewCreate -> afterViewStart -> afterViewResume -> beforeViewPause -> beforeViewStop -> beforeViewDestroy -> onDetachView -> onCleared；  
 * onInitialize 和 onCleared 对应 ViewModel 的生命周期；  
 * onAttachView 和 onDetachView 在 presenter 持有和解除对 view 的引用时触发；  
 * afterViewCreate ... beforeViewDestroy 一一对应 view 的生命周期。  
+* 打开和关闭一个 view 时，绑定了 view 的 presenter 生命周期执行流程：
 
-![一键生成 MVP 模板代码](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/open_close_page.gif) ![一键生成 MVP 模板代码](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/rotate_page.gif)
+![打开和关闭 view 时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/open_close_page.gif "打开和关闭 view 时 presenter 的生命周期流程")  
+
+![一键生成 MVP 模板代码](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/rotate_page.gif)
