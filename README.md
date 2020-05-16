@@ -69,5 +69,6 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
 ![打开和关闭 view 时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/open_close_page.gif "打开和关闭 view 时 presenter 的生命周期流程")  
 
-* 当发生屏幕旋转 view 被重建时，绑定了 view 的 presenter 生命周期执行流程：
+* 当发生屏幕旋转 view 被重建时，绑定了 view 的 presenter 生命周期执行流程：  
+
 ![屏幕旋转 view 被重建时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/rotate_page.gif "屏幕旋转 view 被重建时 presenter 的生命周期流程")
