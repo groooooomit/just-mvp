@@ -11,8 +11,7 @@ implementation 'com.bfu:just-mvp:1.1.6'
 * api 设计即友好又简洁，尤其是针对 kotlin 开发者，同时内置一些常用方法提升开发效率。
 ## 开始使用
 > 以用户登录的场景为例  
-> Contract:
-
+* [LoginContract](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/core/contract/LoginContract.kt)
 ```kotlin
 interface LoginContract {
 
@@ -25,7 +24,7 @@ interface LoginContract {
 
 }
 ```
-> Presenter:
+* [LoginPresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/core/presenter/LoginPresenter.kt)
 ```kotlin
 class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presenter {
 
@@ -34,7 +33,7 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
     }
 }
 ```
-> View:
+* [LoginActivity](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/core/presenter/LoginPresenter.kt)
 ```kotlin
 class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
