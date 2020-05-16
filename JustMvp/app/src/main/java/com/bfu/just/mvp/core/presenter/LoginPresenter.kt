@@ -1,11 +1,28 @@
 package com.bfu.just.mvp.core.presenter
 
-import com.bfu.just.mvp.common.LogPresenter
 import com.bfu.just.mvp.core.contract.LoginContract
+import com.bfu.just.mvp.core.model.UserLoginModel
+import just.mvp.BasePresenter
 
-class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Presenter {
+class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presenter {
+
+    private lateinit var userLoginModel: UserLoginModel
+    private var isLogining = false
+
+    override fun onInitialize() {
+        userLoginModel = UserLoginModel(application)
+    }
+
+    override fun afterViewCreate() {
+        if (isLogining) {
+            view?.showLoginStart()
+        } else {
+            view?.showLoginEnd()
+        }
+    }
 
     override fun login(username: String?, password: String?) {
+        isLogining = true
         view?.showLoginStart()
 
         // check username
@@ -14,6 +31,7 @@ class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Present
                 showLoginEnd()
                 toast("用户名不能为空")
             }
+            isLogining = false
             return
         }
 
@@ -23,29 +41,30 @@ class LoginPresenter : LogPresenter<LoginContract.View>(), LoginContract.Present
                 showLoginEnd()
                 toast("密码不能为空")
             }
+            isLogining = false
             return
         }
 
-        // 模拟耗时登录
-        Thread {
-            Thread.sleep(5000)
-            if ("user" == username && "123456" == password) {
-                runOnUi {
-                    it.apply {
+        // login
+        userLoginModel.login(username, password,
+            onSuccess = { token ->
+                runOnUi { view ->
+                    view.apply {
                         showLoginEnd()
                         toastLong("登录成功")
-                        goMainPage("abc123")
+                        goMainPage(token)
                     }
+                    isLogining = false
                 }
-            } else {
-                runOnUi {
-                    it.apply {
+            },
+            onFailure = { error ->
+                runOnUi { view ->
+                    view.apply {
                         showLoginEnd()
-                        toastLong("用户名或密码错误")
+                        toastLong(error.message ?: "未知错误")
                     }
+                    isLogining = false
                 }
-            }
-        }.start()
+            })
     }
-
 }

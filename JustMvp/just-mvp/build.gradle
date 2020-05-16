@@ -7,7 +7,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
-        versionName "1.1.4"
+        versionName "1.1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,7 +42,7 @@ dependencies {
 ext {
     gitUrl              = 'https://github.com/groooooomit/just-mvp.git'
     siteUrl             = 'https://github.com/groooooomit/just-mvp'
-    pom_version         = "1.1.4"
+    pom_version         = android.defaultConfig.versionName
     pom_packaging       = 'aar'
     pom_groupId         = 'com.bfu'
     pom_artifactId      = 'just-mvp'

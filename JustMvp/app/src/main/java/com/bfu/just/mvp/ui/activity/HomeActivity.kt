@@ -1,26 +1,22 @@
 package com.bfu.just.mvp.ui.activity
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bfu.just.mvp.R
-import com.bfu.just.mvp.common.LogActivity
 import com.bfu.just.mvp.ui.fragment.LoginFragment
 
-
-class HomeActivity : LogActivity() {
+class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        var fragment = supportFragmentManager.findFragmentByTag("LoginFragment")
-        if (null == fragment) {
-            fragment = LoginFragment()
+        if (null == supportFragmentManager.findFragmentByTag("LoginFragment")) {
             supportFragmentManager
                 .beginTransaction()
-                .add(android.R.id.content, fragment, "LoginFragment")
+                .add(R.id.frame_container, LoginFragment(), "LoginFragment")
                 .commit()
         }
-
     }
 
 }

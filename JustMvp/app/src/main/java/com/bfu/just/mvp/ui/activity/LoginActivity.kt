@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.View
 import com.bfu.just.mvp.R
 import com.bfu.just.mvp.core.contract.LoginContract
-import com.bfu.just.mvp.common.LogPresenterActivity
 import com.bfu.just.mvp.core.presenter.LoginPresenter
+import just.mvp.PresenterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : LogPresenterActivity<LoginPresenter>(), LoginContract.View {
+class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

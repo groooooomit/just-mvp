@@ -38,11 +38,9 @@ public final class Presenters {
      * @param view    实现了 {@link IView}
      * @param creator 如果 Presenter 没有被创建，那么通过 Creator 创建
      */
-    public static <V extends IView, P extends IPresenter> void bind(@NonNull V view, @NonNull PresenterContainer.Creator<P> creator) {
+    public static <V extends IView> void bind(@NonNull V view, @NonNull PresenterContainer.Creator creator) {
         //noinspection unchecked
-        of(view).get(PresenterContainer.class)
-                .preparePresenter(creator)
-                .attachView(view);
+        of(view).get(PresenterContainer.class).preparePresenter(creator).attachView(view);
     }
 
     /**
@@ -54,9 +52,7 @@ public final class Presenters {
     @NonNull
     public static <V extends IView, P extends IPresenter> P get(@NonNull V view) {
         //noinspection unchecked
-        return (P) of(view)
-                .get(PresenterContainer.class)
-                .requirePresenter();
+        return (P) of(view).get(PresenterContainer.class).requirePresenter();
     }
 
     ///////////////////////////////////////////////////////////////////////////

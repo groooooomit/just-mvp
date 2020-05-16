@@ -5,14 +5,9 @@ import just.mvp.BasePresenter
 
 class MainPresenter : BasePresenter<MainContract.View>(), MainContract.Presenter {
 
-    override fun onInitialize() {
-
-    }
-
     override fun afterViewCreate() {
         val token = view!!.data.getString("token")
         runOnUi { it.showToken(token) }
     }
-
 
 }
