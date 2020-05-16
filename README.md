@@ -51,7 +51,10 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 * :warning: 避免在界面控件初始化完成时立即访问 Presenter，为了确保 Presenter 中对 View 的访问的正确性（控件不为null），Presenter 的初始化是在控件绑定之后才进行的，应该将业务逻辑搬到 Presenter 的 afterViewCreate 中；
 * :warning: 不要在 View 的 onDestroy 方法中访问 Presenter。Presenter 由 ViewModel 承载，onDestroy 回调前 ViewModel 已经被回收了，应该将逻辑转移到 Presenter 的 beforeViewDestroy 中；
 
-## 开始使用
+## 设计思路
+* [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 类图  
+
+![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png)
 关于 Fragment 中 Presenter 的绑定时机选择以及最佳实践的思考，为了 View 对 Presenter 透明化，即 View 的行为表现需要一致
 第一次学习 MVP 模式的项目是 [Google Mvp Sample](https://github.com/android/architecture-samples) 
 
