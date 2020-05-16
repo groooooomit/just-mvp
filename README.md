@@ -1,14 +1,13 @@
 # just-mvp
-一个轻量灵活小清新的 android mvp 模式框架，基于 Java8、androidx、ViewModel 和 Lifecycle。
+* 一个轻量灵活小清新的 android mvp 模式框架，基于 Java8、androidx、ViewModel 和 Lifecycle；
+* Presenter 以 [ViewModel](https://developer.android.google.cn/topic/libraries/architecture/viewmodel) 的形式被创建和管理，在发生屏幕旋转等配置更改后 Presenter 以及它所持有的数据和业务 Model 将继续存在，无需重新初始化，大大地提高了程序响应速度；
+* Presenter 通过 [Lifecycle](https://developer.android.google.cn/topic/libraries/architecture/lifecycle) 感知 View 的生命周期，配合 ViewModel 实现了 View 和 Presenter 的充分解耦，当 View 即将被 destroy 时 Presenter 及时主动地解除对 View 持有的引用，有效地避免了占用大量资源的 View 出现内存泄漏（后面有详细的生命周期方法说明）；
+* api 设计即友好又简洁，尤其是针对 kotlin 开发者，同时内置一些常用方法提升开发效率。
 
-## 在 AndroidStudio 项目中使用
+## 添加到你的项目
 ```gradle
 implementation 'com.bfu:just-mvp:1.1.6'
 ```
-## 特点
-* Presenter 以 [ViewModel](https://developer.android.google.cn/topic/libraries/architecture/viewmodel) 的形式被创建和管理，在发生屏幕旋转等配置更改后 Presenter 以及它所持有的数据和业务 Model 将继续存在，无需重新初始化，大大地提高了程序响应速度。
-* Presenter 通过 [Lifecycle](https://developer.android.google.cn/topic/libraries/architecture/lifecycle) 感知 View 的生命周期，配合 ViewModel 实现了 View 和 Presenter 的充分解耦，当 View 即将被 destroy 时 Presenter 及时主动地解除对 View 持有的引用，有效地避免了占用大量资源的 View 出现内存泄漏（后面有详细的生命周期方法说明）
-* api 设计即友好又简洁，尤其是针对 kotlin 开发者，同时内置一些常用方法提升开发效率。
 ## 开始使用
 > 以用户登录的场景为例  
 * [LoginContract](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/core/contract/LoginContract.kt)
