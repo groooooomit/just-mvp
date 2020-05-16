@@ -1,5 +1,5 @@
 # just-mvp
-* 一个轻量灵活小清新的 [android mvp](https://github.com/android/architecture-samples/tree/todo-mvp) 模式框架，基于 Java8、[androidx](https://developer.android.google.cn/jetpack/androidx)、[ViewModel](https://developer.android.google.cn/topic/libraries/architecture/viewmodel) 和 [Lifecycle](https://developer.android.google.cn/topic/libraries/architecture/lifecycle)；
+* 一个轻量灵活小清新的 [android mvp](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) 模式框架，基于 Java8、[androidx](https://developer.android.google.cn/jetpack/androidx)、[ViewModel](https://developer.android.google.cn/topic/libraries/architecture/viewmodel) 和 [Lifecycle](https://developer.android.google.cn/topic/libraries/architecture/lifecycle)；
 * presenter 以 [ViewModel](https://developer.android.google.cn/topic/libraries/architecture/viewmodel) 的形式被创建和管理，在发生屏幕旋转等配置更改后 presenter 以及它所持有的数据和业务 Model 将继续存在，无需重新初始化，大大地提高了程序响应速度。由于 presenter 拥有 ViewModel 的特性，可以直接持有 [LiveData](https://developer.android.google.cn/topic/libraries/architecture/livedata)；
 * presenter 通过 [Lifecycle](https://developer.android.google.cn/topic/libraries/architecture/lifecycle) 感知 View 的生命周期，配合 ViewModel 实现了 view 和 presenter 的充分解耦，当 view 即将被 destroy 时 presenter 及时主动地解除对 view 持有的引用，有效地避免了占用大量资源的 view 出现内存泄漏（后面有详细的生命周期方法说明）；
 * api 设计即友好又简洁，尤其是针对 kotlin 开发者，同时内置一些常用方法提升开发效率；
