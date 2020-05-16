@@ -52,11 +52,12 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
 ## 设计思路
 * [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 类图  
-> IPresenter 继承自 IViewModel 以拥有 ViewModel 的特性；  
-> UiActionExecutor 使得 Presenter 能够通过 Handler 在异步场景中便捷地更新 UI；  
-> PresenterLifecycle 定义了 Presenter 的生命周期方法；  
-> AbstractPresenter 聚合了 Presenter 的 api；  
-> BasePresenter 是 AbstractPresenter 的具体实现。  
+> [IViewModel](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/base/IViewModel.java) 通过接口组合的方式实现 ViewModel；  
+> [IPresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/base/IPresenter.java) 继承自 IViewModel 使得 presenter 拥有 ViewModel 的特性；  
+> [UiActionExecutor](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/uirun/UiActionExecutor.java) 使得 presenter 能够通过 Handler 在异步场景中便捷地更新 UI；  
+> [PresenterLifecycle](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/lifecycle/PresenterLifecycle.java) 定义了 presenter 的生命周期方法；  
+> [AbstractPresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/base/AbstractPresenter.java) 聚合了 presenter 的 api；  
+> [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 是 AbstractPresenter 的具体实现。  
 
 ![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png)  
 
