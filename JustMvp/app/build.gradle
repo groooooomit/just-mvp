@@ -45,4 +45,9 @@ dependencies {
 
     /* 内存泄漏检查 see https://square.github.io/leakcanary/getting_started/ */
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
+
+    /* import rxjava3 */
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
 }
