@@ -58,7 +58,7 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 * [AbstractPresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/base/AbstractPresenter.java) 聚合了 presenter 的 api；  
 * [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 是 AbstractPresenter 的具体实现。  
 
-![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png)  
+![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png "BasePresenter 类图")  
 
 ## [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 生命周期
 * presenter 生命周期一共 10 个方法：onInitialize -> onAttachView -> afterViewCreate -> afterViewStart -> afterViewResume -> beforeViewPause -> beforeViewStop -> beforeViewDestroy -> onDetachView -> onCleared；  
@@ -67,8 +67,8 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 * afterViewCreate ... beforeViewDestroy 一一对应 view 的生命周期。  
 * 打开和关闭一个 view 时，绑定了 view 的 presenter 生命周期执行流程：  
 
-![打开和关闭 view 时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/open_close_page.gif "打开和关闭 view 时 presenter 的生命周期流程")  
+    ![打开和关闭 view 时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/open_close_page.gif "打开和关闭 view 时 presenter 的生命周期流程")  
 
-* 当发生屏幕旋转 view 被重建时，绑定了 view 的 presenter 生命周期执行流程：  
+* 当发生屏幕旋转 view 被销毁又重建时，绑定了 view 的 presenter 生命周期执行流程：  
 
-![屏幕旋转 view 被重建时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/rotate_page.gif "屏幕旋转 view 被重建时 presenter 的生命周期流程")
+    ![屏幕旋转 view 被销毁又重建时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/rotate_page.gif "屏幕旋转 view 被销毁又重建时 presenter 的生命周期流程")
