@@ -49,9 +49,10 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 ```
 * :warning: 避免在界面控件初始化完成时立即访问 Presenter，为了确保 Presenter 中对 View 的访问的正确性（控件不为null），Presenter 的初始化是在控件绑定之后才进行的，应该将业务逻辑搬到 Presenter 的 **afterViewCreate** 中；  
 * :warning: 不要在 View 的 onDestroy 方法中访问 Presenter。Presenter 由 ViewModel 承载，onDestroy 回调前 ViewModel 已经被回收了，应该将逻辑转移到 Presenter 的 **beforeViewDestroy** 中；
-
-## 一键生成模板代码
-> 本框架专属神器 [Just Mvp Generator](https://github.com/groooooomit/just-mvp-plugin) ，可以一键生成繁琐的 Contract、Presenter、Activity/Fragment 样板代码以及布局文件。
+* 一键生成模板代码
+    > 本框架专属神器 [Just Mvp Generator](https://github.com/groooooomit/just-mvp-plugin) ，可以一键生成繁琐的 Contract、Presenter、Activity/Fragment 样板代码以及布局文件，点击连接查看插件详情。  
+    
+    ![Just Mvp Generator](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/just-mvp-generator-plugin.png "Just Mvp Generator")    
 
 ## [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 设计思路
 * [IViewModel](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/base/IViewModel.java) 通过接口组合的方式实现 ViewModel；  
@@ -61,7 +62,7 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 * [AbstractPresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/base/AbstractPresenter.java) 聚合了 presenter 的 api；  
 * [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 是 AbstractPresenter 的具体实现。  
 
-![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png "BasePresenter 类图")  
+    ![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png "BasePresenter 类图")  
 
 ## [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 生命周期
 * presenter 生命周期一共 10 个方法：onInitialize -> onAttachView -> afterViewCreate -> afterViewStart -> afterViewResume -> beforeViewPause -> beforeViewStop -> beforeViewDestroy -> onDetachView -> onCleared；  
