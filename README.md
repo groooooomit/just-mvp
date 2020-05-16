@@ -82,7 +82,9 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
     ![用户登录](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/screen_rotate.gif "用户登录")  
    
-   
+## 框架细节参见项目源码  
+
+
 ```
 Less is more.
 ```
