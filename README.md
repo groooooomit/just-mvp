@@ -15,7 +15,9 @@ implementation 'com.bfu:just-mvp:1.1.6'
 ```kotlin
 interface LoginContract {
 
-    interface View : IView
+    interface View : IView {
+        ...
+    }
 
     interface Presenter : IPresenter<View> {
         fun login(username: String?, password: String?)
