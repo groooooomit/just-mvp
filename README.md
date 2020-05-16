@@ -48,8 +48,8 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
     }
 }
 ```
-:warning: 避免在界面控件初始化完成时立即访问 Presenter，为了确保 Presenter 中对 View 的访问的正确性（控件不为null），Presenter 的初始化是在控件绑定之后才进行的，应该将业务逻辑搬到 Presenter 的 **afterViewCreate** 中；  
-:warning: 不要在 View 的 onDestroy 方法中访问 Presenter。Presenter 由 ViewModel 承载，onDestroy 回调前 ViewModel 已经被回收了，应该将逻辑转移到 Presenter 的 **beforeViewDestroy** 中；
+> :warning: 避免在界面控件初始化完成时立即访问 Presenter，为了确保 Presenter 中对 View 的访问的正确性（控件不为null），Presenter 的初始化是在控件绑定之后才进行的，应该将业务逻辑搬到 Presenter 的 **afterViewCreate** 中；  
+> :warning: 不要在 View 的 onDestroy 方法中访问 Presenter。Presenter 由 ViewModel 承载，onDestroy 回调前 ViewModel 已经被回收了，应该将逻辑转移到 Presenter 的 **beforeViewDestroy** 中；
 
 ## 设计思路
 * [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 类图  
