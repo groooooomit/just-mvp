@@ -18,7 +18,6 @@ interface LoginContract {
     interface View : IView
 
     interface Presenter : IPresenter<View> {
-
         fun login(username: String?, password: String?)
     }
 
@@ -41,8 +40,7 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         login.setOnClickListener {
-            val usernameStr = username.text?.toString()
-            val passwordStr = password.text?.toString()
+            ...
             presenter.login(usernameStr, passwordStr)
         }
     }
