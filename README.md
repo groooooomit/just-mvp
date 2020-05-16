@@ -32,7 +32,7 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
     }
 }
 ```
-* [LoginActivity](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/core/presenter/LoginPresenter.kt)
+* [LoginActivity](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/core/presenter/LoginPresenter.kt) 或 [LoginFragment](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/ui/fragment/LoginFragment.kt)
 ```kotlin
 class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
