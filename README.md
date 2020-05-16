@@ -51,7 +51,7 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 :warning: 不要在 View 的 onDestroy 方法中访问 Presenter。Presenter 由 ViewModel 承载，onDestroy 回调前 ViewModel 已经被回收了，应该将逻辑转移到 Presenter 的 **beforeViewDestroy** 中；
 
 ## 一键生成模板代码
-> 本框架专属神器 **[Just Mvp Generator](https://github.com/groooooomit/just-mvp-plugin)** ，可以一键生成繁琐的 Contract、Presenter、Activity/Fragment 样板代码以及布局文件，点击连接查看插件详情。  
+> 本框架专属神器 **[Just Mvp Generator](https://github.com/groooooomit/just-mvp-plugin)** ，可以一键生成繁琐的 Contract、Presenter、Activity/Fragment 样板代码以及布局文件，点击链接查看插件详情。  
 
 ![Just Mvp Generator](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/just-mvp-generator-plugin.png "Just Mvp Generator")    
 
