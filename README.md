@@ -22,7 +22,6 @@ interface LoginContract {
     interface Presenter : IPresenter<View> {
         fun login(username: String?, password: String?)
     }
-
 }
 ```
 * [LoginPresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/core/presenter/LoginPresenter.kt)
@@ -53,8 +52,16 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
 ## 设计思路
 * [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 类图  
+> IPresenter 继承自 IViewModel 以拥有 ViewModel 的特性；  
+> UiActionExecutor 使得 Presenter 能够通过 Handler 在异步场景中便捷地更新 UI；  
+> PresenterLifecycle 定义了 Presenter 的生命周期方法；  
+> AbstractPresenter 聚合了 Presenter 的 api；  
+> BasePresenter 是 AbstractPresenter 的具体实现。  
 
-![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png)
+![BasePresenter 类图](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/BasePresenter.png)  
+
+
+
 关于 Fragment 中 Presenter 的绑定时机选择以及最佳实践的思考，为了 View 对 Presenter 透明化，即 View 的行为表现需要一致
 第一次学习 MVP 模式的项目是 [Google Mvp Sample](https://github.com/android/architecture-samples) 
 
