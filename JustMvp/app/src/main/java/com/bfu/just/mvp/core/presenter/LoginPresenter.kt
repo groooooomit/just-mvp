@@ -1,7 +1,7 @@
 package com.bfu.just.mvp.core.presenter
 
 import com.bfu.just.mvp.core.contract.LoginContract
-import com.bfu.just.mvp.core.model.UserLoginModel
+import com.bfu.just.mvp.core.model.UserModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -11,9 +11,9 @@ import just.mvp.BasePresenter
 class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presenter {
 
     /**
-     * 用户登录 Model
+     * 用户 Model
      */
-    private lateinit var userLoginModel: UserLoginModel
+    private lateinit var userModel: UserModel
 
     /**
      * 标记当前是否正在登录
@@ -26,7 +26,7 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
     private val compositeDisposable = CompositeDisposable()
 
     override fun onInitialize() {
-        userLoginModel = UserLoginModel(application)
+        userModel = UserModel(application)
     }
 
     override fun afterViewCreate() {
@@ -41,28 +41,8 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
         isLogining = true
         view?.showLoginStart()
 
-        // check username
-        if (username.isNullOrEmpty()) {
-            view?.apply {
-                showLoginEnd()
-                toast("用户名不能为空")
-            }
-            isLogining = false
-            return
-        }
-
-        // check password
-        if (password.isNullOrEmpty()) {
-            view?.apply {
-                showLoginEnd()
-                toast("密码不能为空")
-            }
-            isLogining = false
-            return
-        }
-
         // login
-        userLoginModel.login(username, password)
+        userModel.login(username, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally {
