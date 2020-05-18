@@ -1,22 +1,21 @@
 package com.bfu.just.mvp.ui.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.bfu.just.mvp.R
-import com.bfu.just.mvp.ui.fragment.LoginFragment
+import com.bfu.just.mvp.core.contract.HomeContract
+import com.bfu.just.mvp.core.presenter.HomePresenter
+import just.mvp.PresenterActivity
+import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : PresenterActivity<HomePresenter>(), HomeContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+    }
 
-        if (null == supportFragmentManager.findFragmentByTag("LoginFragment")) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.frame_container, LoginFragment(), "LoginFragment")
-                .commit()
-        }
+    override fun showToken(token: String?) {
+        txt_token.text = token ?: "--"
     }
 
 }

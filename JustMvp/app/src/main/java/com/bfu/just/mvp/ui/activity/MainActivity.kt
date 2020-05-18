@@ -1,21 +1,22 @@
 package com.bfu.just.mvp.ui.activity
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bfu.just.mvp.R
-import com.bfu.just.mvp.core.contract.MainContract
-import com.bfu.just.mvp.core.presenter.MainPresenter
-import just.mvp.PresenterActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.bfu.just.mvp.ui.fragment.LoginFragment
 
-class MainActivity : PresenterActivity<MainPresenter>(), MainContract.View {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
 
-    override fun showToken(token: String?) {
-        txt_token.text = token ?: "--"
+        if (null == supportFragmentManager.findFragmentByTag("LoginFragment")) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.frame_container, LoginFragment(), "LoginFragment")
+                .commit()
+        }
     }
 
 }

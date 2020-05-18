@@ -13,8 +13,6 @@ import com.bfu.just.mvp.R;
 import com.bfu.just.mvp.core.contract.LoginContract;
 import com.bfu.just.mvp.core.presenter.LoginPresenter;
 
-import org.jetbrains.annotations.NotNull;
-
 import just.mvp.PresenterActivity;
 
 public class Login2Activity extends PresenterActivity<LoginPresenter> implements LoginContract.View {
@@ -56,10 +54,8 @@ public class Login2Activity extends PresenterActivity<LoginPresenter> implements
     }
 
     @Override
-    public void goMainPage(@NotNull String token) {
-        final Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("token", token);
-        startActivity(intent);
+    public void goHomePage() {
+        startActivity(new Intent(this.getActivity(), HomeActivity.class));
         finish();
     }
 }

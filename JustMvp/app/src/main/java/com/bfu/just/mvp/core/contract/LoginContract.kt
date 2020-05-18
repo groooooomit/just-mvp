@@ -12,7 +12,7 @@ interface LoginContract {
 
         fun showLoginEnd()
 
-        fun goMainPage(token: String)
+        fun goHomePage()
 
     }
 

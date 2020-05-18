@@ -3,7 +3,7 @@ package com.bfu.just.mvp.core.contract
 import just.mvp.base.IPresenter
 import just.mvp.base.IView
 
-interface MainContract {
+interface HomeContract {
 
     interface View : IView {
 

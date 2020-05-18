@@ -13,9 +13,7 @@ import androidx.annotation.Nullable;
 import com.bfu.just.mvp.R;
 import com.bfu.just.mvp.core.contract.LoginContract;
 import com.bfu.just.mvp.core.presenter.LoginPresenter;
-import com.bfu.just.mvp.ui.activity.MainActivity;
-
-import org.jetbrains.annotations.NotNull;
+import com.bfu.just.mvp.ui.activity.HomeActivity;
 
 import just.mvp.PresenterFragment;
 import just.mvp.widget.LayoutResId;
@@ -59,10 +57,8 @@ public class Login2Fragment extends PresenterFragment<LoginPresenter> implements
     }
 
     @Override
-    public void goMainPage(@NotNull String token) {
-        final Intent intent = new Intent(this.getActivity(), MainActivity.class);
-        intent.putExtra("token", token);
-        startActivity(intent);
+    public void goHomePage() {
+        startActivity(new Intent(this.getActivity(), HomeActivity.class));
         this.getActivity().finish();
     }
 }

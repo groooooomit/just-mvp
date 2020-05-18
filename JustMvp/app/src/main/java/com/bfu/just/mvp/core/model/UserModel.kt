@@ -1,6 +1,5 @@
 package com.bfu.just.mvp.core.model
 
-import android.app.Application
 import io.reactivex.rxjava3.core.Single
 import java.util.concurrent.TimeUnit
 
@@ -20,7 +19,7 @@ data class LoginParam(val username: String?, val password: String?) {
 /**
  * 用户 model
  */
-class UserModel(private val application: Application) {
+class UserModel {
 
     fun login(username: String?, password: String?): Single<String> =
         Single

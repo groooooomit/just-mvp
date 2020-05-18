@@ -6,7 +6,7 @@ import android.view.View
 import com.bfu.just.mvp.R
 import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.presenter.LoginPresenter
-import com.bfu.just.mvp.ui.activity.MainActivity
+import com.bfu.just.mvp.ui.activity.HomeActivity
 import just.mvp.PresenterFragment
 import just.mvp.widget.LayoutResId
 import kotlinx.android.synthetic.main.activity_login.*
@@ -37,10 +37,8 @@ class LoginFragment : PresenterFragment<LoginPresenter>(), LoginContract.View {
         login.isEnabled = true
     }
 
-    override fun goMainPage(token: String) {
-        Intent(activity, MainActivity::class.java)
-            .apply { putExtra("token", token) }
-            .let { startActivity(it) }
+    override fun goHomePage() {
+        startActivity(Intent(activity, HomeActivity::class.java))
         activity?.finish()
     }
 
