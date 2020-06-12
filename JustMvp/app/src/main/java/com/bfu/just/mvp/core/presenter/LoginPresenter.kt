@@ -7,16 +7,13 @@ import com.bfu.just.mvp.app.observeBy
 import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.model.UserModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
-import just.mvp.BasePresenter
 
 /**
  *  [LoginPresenter] 的 LiveData 版本
  */
-class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presenter {
+class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presenter {
 
     /**
      * 用户 Model
@@ -38,11 +35,6 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
      */
     private lateinit var settings: Settings
 
-    /**
-     * disposable 容器
-     */
-    private val compositeDisposable = CompositeDisposable()
-
     override fun onInitialize() {
         settings = (application as App).settings
     }
@@ -51,10 +43,6 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
         // liveData 安全及时地更新 view
         isLogining.observeBy(view) { if (it) view.showLoginStart() else view.showLoginEnd() }
         info.observeBy(view) { view.showInfo(it) }
-    }
-
-    override fun onCleared() {
-        compositeDisposable.dispose()
     }
 
     override fun login(username: String?, password: String?) {
@@ -75,7 +63,7 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
                     onError = { error ->
                         info.value = "登录异常：${error.message ?: "Unknown"}"
                     }
-                ).addTo(compositeDisposable)
+                ).addTo(this)
         }
     }
 
