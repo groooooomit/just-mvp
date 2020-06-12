@@ -1,9 +1,9 @@
 package com.bfu.just.mvp.core.presenter
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.bfu.just.mvp.app.App
 import com.bfu.just.mvp.app.Settings
+import com.bfu.just.mvp.app.observeBy
 import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.model.UserModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -48,12 +48,9 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
     }
 
     override fun onAttachView(view: LoginContract.View) {
-        isLogining.observe(view, Observer {
-            if (it) view.showLoginStart() else view.showLoginEnd()
-        })
-        info.observe(view, Observer {
-            view.showInfo(it)
-        })
+        // liveData 安全及时地更新 view
+        isLogining.observeBy(view) { if (it) view.showLoginStart() else view.showLoginEnd() }
+        info.observeBy(view) { view.showInfo(it) }
     }
 
     override fun onCleared() {
