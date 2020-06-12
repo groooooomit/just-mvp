@@ -42,7 +42,10 @@ class LoginFragment : PresenterFragment<LoginPresenter>(), LoginContract.View {
     }
 
     override fun goHomePage() {
-        startActivity(Intent(activity, HomeActivity::class.java))
+        val intent = Intent(activity, HomeActivity::class.java)
+        /* 页面间数据传递. */
+        intent.putExtra("arg_message", "I'm a message")
+        startActivity(intent)
         activity?.finish()
     }
 

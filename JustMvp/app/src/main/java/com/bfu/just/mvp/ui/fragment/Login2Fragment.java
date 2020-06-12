@@ -64,6 +64,7 @@ public class Login2Fragment extends PresenterFragment<LoginPresenter> implements
 
     @Override
     public void goHomePage() {
+        /* 作为对照，不传递数据. */
         startActivity(new Intent(this.getActivity(), HomeActivity.class));
         this.getActivity().finish();
     }
