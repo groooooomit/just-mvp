@@ -55,6 +55,7 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally { isLogining.value = false }
                 .doOnSuccess { settings.token.value = it }
+                .doOnDispose { info.value = "登录已取消" }
                 .subscribeBy(
                     onSuccess = {
                         info.value = "登录成功"
@@ -63,7 +64,7 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
                     onError = { error ->
                         info.value = "登录异常：${error.message ?: "Unknown"}"
                     }
-                ).attach()
+                ).disposeWhenCleared()
         }
     }
 
