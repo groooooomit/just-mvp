@@ -14,6 +14,6 @@ abstract class RxPresenter<V : IView>(private val container: CompositeDisposable
         container.dispose()
     }
 
-}
+    protected fun Disposable.attach(): Disposable = apply { container.add(this) }
 
-fun Disposable.addTo(container: DisposableContainer): Disposable = apply { container.add(this) }
+}

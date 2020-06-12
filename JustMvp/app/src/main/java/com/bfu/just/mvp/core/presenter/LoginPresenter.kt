@@ -63,7 +63,7 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
                     onError = { error ->
                         info.value = "登录异常：${error.message ?: "Unknown"}"
                     }
-                ).addTo(this)
+                ).attach()
         }
     }
 
