@@ -8,6 +8,8 @@ interface LoginContract {
 
     interface View : IView {
 
+        fun showInfo(info: String?)
+
         fun showLoginStart()
 
         fun showLoginEnd()

@@ -24,7 +24,7 @@ public class Login2Fragment extends PresenterFragment<LoginPresenter> implements
     private ProgressBar barLoading;
     private TextView txtUserName;
     private TextView txtPassword;
-
+    private TextView txtInfo;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -32,12 +32,18 @@ public class Login2Fragment extends PresenterFragment<LoginPresenter> implements
         barLoading = view.findViewById(R.id.loading);
         txtUserName = view.findViewById(R.id.username);
         txtPassword = view.findViewById(R.id.password);
+        txtInfo = view.findViewById(R.id.txt_info);
 
         btLogin.setOnClickListener(v -> {
             final String usernameStr = txtUserName.getText().toString().trim();
             final String passwordStr = txtPassword.getText().toString().trim();
             getPresenter().login(usernameStr, passwordStr);
         });
+    }
+
+    @Override
+    public void showInfo(@Nullable String info) {
+        txtInfo.setText(info);
     }
 
     @Override

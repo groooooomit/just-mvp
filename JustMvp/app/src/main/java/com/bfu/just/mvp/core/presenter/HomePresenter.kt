@@ -18,8 +18,4 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
         settings.token.observe(view, Observer { view.showToken(it) })
     }
 
-    override fun onDetachView(view: HomeContract.View) {
-        settings.token.removeObservers(view)
-    }
-
 }

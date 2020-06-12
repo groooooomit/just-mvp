@@ -21,19 +21,22 @@ data class LoginParam(val username: String?, val password: String?) {
  */
 class UserModel {
 
-    fun login(username: String?, password: String?): Single<String> =
-        Single
-            /* 构造登录参数. */
-            .fromCallable { LoginParam(username, password) }
+    fun login(username: String?, password: String?): Single<String> = Single
 
-            /* 参数验证. */
-            .doOnSuccess { it.valid() }
+        /* 构造登录参数. */
+        .fromCallable { LoginParam(username, password) }
 
-            /* 模拟耗时操作. */
-            .delay(5, TimeUnit.SECONDS)
+        /* 参数验证. */
+        .doOnSuccess { it.valid() }
 
-            /* 模拟账号登录逻辑. */
-            .map { if ("user" == it.username!! && "123456" == it.password) "ABCDEFG" else throw Exception("用户名或密码错误") }
+        /* 模拟耗时操作. */
+        .delay(5, TimeUnit.SECONDS)
+
+        /* 模拟账号登录逻辑. */
+        .map {
+            if ("user" == it.username!! && "123456" == it.password) "ABCDEFG"
+            else throw Exception("用户名或密码错误")
+        }
 
 }
 

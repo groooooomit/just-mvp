@@ -8,6 +8,7 @@ import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.model.UserModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import just.mvp.BasePresenter
@@ -23,9 +24,14 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
     private val userModel = UserModel()
 
     /**
-     * 标记当前是否正在登录
+     * 用于记录并更新界面登录状态
      */
     private val isLogining = MutableLiveData<Boolean>()
+
+    /**
+     * 用于记录并更新界面提示信息
+     */
+    private val info = MutableLiveData<String>()
 
     /**
      * 全局属性
@@ -42,11 +48,12 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
     }
 
     override fun onAttachView(view: LoginContract.View) {
-        isLogining.observe(view, Observer { if (it) view.showLoginStart() else view.showLoginEnd() })
-    }
-
-    override fun onDetachView(view: LoginContract.View) {
-        isLogining.removeObservers(view)
+        isLogining.observe(view, Observer {
+            if (it) view.showLoginStart() else view.showLoginEnd()
+        })
+        info.observe(view, Observer {
+            view.showInfo(it)
+        })
     }
 
     override fun onCleared() {
@@ -54,23 +61,25 @@ class LoginPresenter : BasePresenter<LoginContract.View>(), LoginContract.Presen
     }
 
     override fun login(username: String?, password: String?) {
-        isLogining.value = true
-
-        // login
-        userModel.login(username, password)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doFinally { isLogining.value = false }
-            .subscribeBy(
-                onSuccess = { token ->
-                    settings.token.value = token
-                    view?.toastLong("登录成功")
-                    view?.goHomePage()
-                },
-                onError = { error ->
-                    view?.toastLong(error.message ?: "未知错误")
-                }
-            ).let { compositeDisposable.add(it) }
+        if (isLogining.value != true) {
+            isLogining.value = true
+            info.value = "正在进行登录..."
+            // login
+            userModel.login(username, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally { isLogining.value = false }
+                .doOnSuccess { settings.token.value = it }
+                .subscribeBy(
+                    onSuccess = {
+                        info.value = "登录成功"
+                        view?.goHomePage()
+                    },
+                    onError = { error ->
+                        info.value = "登录异常：${error.message ?: "Unknown"}"
+                    }
+                ).addTo(compositeDisposable)
+        }
     }
 
 }

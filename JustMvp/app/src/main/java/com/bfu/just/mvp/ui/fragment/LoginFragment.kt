@@ -23,6 +23,10 @@ class LoginFragment : PresenterFragment<LoginPresenter>(), LoginContract.View {
         }
     }
 
+    override fun showInfo(info: String?) {
+        txt_info.text = info
+    }
+
     override fun showLoginStart() {
         loading.visibility = View.VISIBLE
         username.isEnabled = false

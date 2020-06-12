@@ -20,6 +20,7 @@ public class Login2Activity extends PresenterActivity<LoginPresenter> implements
     private ProgressBar barLoading;
     private TextView txtUserName;
     private TextView txtPassword;
+    private TextView txtInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,12 +30,18 @@ public class Login2Activity extends PresenterActivity<LoginPresenter> implements
         barLoading = findViewById(R.id.loading);
         txtUserName = findViewById(R.id.username);
         txtPassword = findViewById(R.id.password);
+        txtInfo = findViewById(R.id.txt_info);
 
         btLogin.setOnClickListener(v -> {
             final String usernameStr = txtUserName.getText().toString().trim();
             final String passwordStr = txtPassword.getText().toString().trim();
             getPresenter().login(usernameStr, passwordStr);
         });
+    }
+
+    @Override
+    public void showInfo(@Nullable String info) {
+        txtInfo.setText(info);
     }
 
     @Override
