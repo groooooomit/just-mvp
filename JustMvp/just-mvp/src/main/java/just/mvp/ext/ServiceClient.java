@@ -21,6 +21,7 @@ import java.util.List;
  * @param <B>
  */
 public abstract class ServiceClient<B extends IBinder> {
+
     @NonNull
     private final Context context;
 
