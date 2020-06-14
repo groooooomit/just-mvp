@@ -14,9 +14,9 @@ import just.mvp.base.Presenters;
 /**
  * 提供一个 Mvp 的模版，如果无法继承自 PresenterActivity，那么也可以直接使用 {@link Presenters} 工具
  * <p>
- * {@link Presenters#tryBind(IView, PresenterContainer.Creator)} 用来绑定 View 和 Presenter
+ * {@link Presenters#bind(IView, PresenterContainer.Creator)} 用来绑定 View 和 Presenter
  * <p>
- * {@link Presenters#get(IView)} 用来获取绑定了 View 的 Presenter
+ * {@link Presenters#get(IView, String)} 用来获取绑定了 View 的 Presenter
  * <p>
  * 当前创建 Presenter 的方式为 Class#newInstance() 的方式
  * <p>

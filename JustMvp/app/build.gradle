@@ -54,6 +54,7 @@ dependencies {
     /* import just-mvp */
     implementation project(':just-mvp-ktx')
     implementation 'com.bfu:just-mvp:1.1.8'
+//    implementation 'com.bfu:just-mvp-ktx:1.1.8'
     implementation 'com.bfu:just-optional:1.0.0'
 
     /* 内存泄漏检查 see https://square.github.io/leakcanary/getting_started/ */
