@@ -1,4 +1,4 @@
-package com.bfu.just.mvp.core.presenter
+package just.mvp.ktx
 
 import androidx.annotation.CallSuper
 import io.reactivex.rxjava3.disposables.CompositeDisposable

@@ -3,12 +3,13 @@ package com.bfu.just.mvp.core.presenter
 import androidx.lifecycle.MutableLiveData
 import com.bfu.just.mvp.app.App
 import com.bfu.just.mvp.app.Settings
-import com.bfu.just.mvp.app.observeBy
 import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.model.UserModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import just.mvp.ktx.RxPresenter
+import just.mvp.ktx.observeBy
 
 /**
  *  [LoginPresenter] 的 LiveData 版本

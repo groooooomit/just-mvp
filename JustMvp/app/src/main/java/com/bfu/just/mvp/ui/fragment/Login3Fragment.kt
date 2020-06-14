@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.bfu.just.mvp.R
-import com.bfu.just.mvp.app.bind
 import com.bfu.just.mvp.core.contract.HomeContract
 import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.presenter.HomePresenter
 import com.bfu.just.mvp.core.presenter.LoginPresenter
 import com.bfu.just.mvp.ui.activity.HomeActivity
-import just.mvp.base.Presenters
+import just.mvp.ktx.bind
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
- * Fragment 作为 View 的非继承 kotlin demo
+ * Fragment 作为 View 的非继承、多 presenter 的 kotlin demo
  */
 class Login3Fragment : Fragment(R.layout.fragment_login), LoginContract.View, HomeContract.View {
 

@@ -1,4 +1,4 @@
-package com.bfu.just.mvp.app
+package just.mvp.ktx
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

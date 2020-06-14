@@ -4,13 +4,12 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.3"
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.1.8" /* 与 just-mvp 保持一致. */
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -40,4 +39,30 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    implementation 'com.bfu:just-mvp:1.1.8'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
 }
+
+ext {
+    gitUrl              = 'https://github.com/groooooomit/just-mvp.git'
+    siteUrl             = 'https://github.com/groooooomit/just-mvp'
+    pom_version         = android.defaultConfig.versionName
+    pom_packaging       = 'aar'
+    pom_groupId         = 'com.bfu'
+    pom_artifactId      = 'just-mvp-ktx'
+    pom_name            = 'just-mvp-ktx'
+    pom_description     = 'A kotlin extension library for just-mvp.'
+    pom_licenseName     = 'The Apache Software License, Version 2.0'
+    pom_licenseUrl      = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    pom_developerId     = 'groooooomit'
+    pom_developerName   = 'groooooomit'
+    pom_developerEmail  = 'fubofubo@hotmail.com'
+    bintray_repo        = 'just'
+    bintray_name        = 'mvp'
+    bintray_desc        = '> A kotlin extension library for just-mvp.'
+    bintray_licenses    = ["Apache-2.0"]
+}
+
+apply from: 'https://raw.githubusercontent.com/groooooomit/jcenter/master/jcenter-maven-install.gradle'
+apply from: 'https://raw.githubusercontent.com/groooooomit/jcenter/master/jcenter-bintray-config.gradle'
+

@@ -1,4 +1,4 @@
-package com.bfu.just.mvp.app
+package just.mvp.ktx
 
 import just.mvp.base.IPresenter
 import just.mvp.base.IView
