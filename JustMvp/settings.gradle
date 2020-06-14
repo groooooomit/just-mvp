@@ -1,1 +1,2 @@
+include ':just-mvp-ktx'
 include ':app', ':just-mvp'
