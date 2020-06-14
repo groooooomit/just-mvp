@@ -3,7 +3,7 @@ package com.bfu.just.mvp.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bfu.just.mvp.R
-import com.bfu.just.mvp.ui.fragment.Login3Fragment
+import com.bfu.just.mvp.ui.fragment.LoginFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         if (null == supportFragmentManager.findFragmentByTag("LoginFragment")) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.frame_container, Login3Fragment(), "LoginFragment")
+                .add(R.id.frame_container, LoginFragment(), "LoginFragment")
                 .commit()
         }
     }

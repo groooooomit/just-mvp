@@ -42,7 +42,6 @@ public final class Presenters {
         return (Class<P>) ((ParameterizedType) (Objects.requireNonNull(viewClass.getGenericSuperclass()))).getActualTypeArguments()[0];
     }
 
-
     /**
      * 反射创建 Presenter 的实例
      */
@@ -59,16 +58,20 @@ public final class Presenters {
     }
 
     /**
-     * 绑定 View 和 Presenter，如果 Presenter 已创建，那么直接返回，否则通过 Creator 进行创建
-     *
-     * @param view    View
-     * @param creator 创建器
+     * 使用默认 key
      */
     @NonNull
     public static <V extends IView, P extends IPresenter<V>> P bind(@NonNull V view, @NonNull PresenterContainer.Creator<P> creator) {
         return bind(view, Presenters.KEY_DEFAULT_PRESENTER, creator);
     }
 
+    /**
+     * 绑定 View 和 Presenter，如果 Presenter 已存在，那么直接返回，否则通过 Creator 进行创建
+     *
+     * @param view    View
+     * @param key     在 PresenterContainer 中索引 presenter 的 key
+     * @param creator 创建器
+     */
     @NonNull
     public static <V extends IView, P extends IPresenter<V>> P bind(@NonNull V view, @NonNull String key, @NonNull PresenterContainer.Creator<P> creator) {
         final P presenter = of(view).get(PresenterContainer.class).preparePresenter(key, creator);
