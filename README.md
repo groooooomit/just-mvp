@@ -48,6 +48,38 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
     }
 }
 ```
+* 也可以不继承自 [PresenterActivity](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/PresenterActivity.java) 或 [PresenterFragment](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/PresenterFragment.java) 单独使用，且可以做到一个 View 绑定复用多个 Presenter，例如 [Login3Fragment](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/ui/fragment/Login3Fragment.kt) 或 [Login3Activity](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/app/src/main/java/com/bfu/just/mvp/ui/activity/Login3Activity.java)
+```kotlin
+class Login3Fragment : Fragment(R.layout.fragment_login), LoginContract.View {
+
+    /* 1. 声明 Presenter. */
+    private lateinit var presenter: LoginContract.Presenter
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view.isClickable = true
+        login.setOnClickListener {
+
+            /* 用户名： user， 密码： 123456 */
+            val usernameStr = username.text?.toString()
+            val passwordStr = password.text?.toString()
+
+            /* 3. Presenter 执行业务逻辑. */
+            presenter.login(usernameStr, passwordStr)
+        }
+        ...
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        /* 2. View 和 Presenter 绑定. */
+        presenter = bind { LoginPresenter() }        
+        ...
+    }
+
+}
+```
 :warning: 避免在界面控件初始化完成时立即访问 Presenter，为了确保 Presenter 中对 View 的访问的正确性（控件不为null），Presenter 的初始化是在控件绑定之后才进行的，应该将业务逻辑搬到 Presenter 的 **afterViewCreate** 中；  
 :warning: 不要在 View 的 onDestroy 方法中访问 Presenter。Presenter 由 ViewModel 承载，onDestroy 回调前 ViewModel 已经被回收了，应该将逻辑转移到 Presenter 的 **beforeViewDestroy** 中；
 
