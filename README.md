@@ -7,7 +7,8 @@
 
 ## 添加到你的项目
 ```gradle
-implementation 'com.bfu:just-mvp:1.1.6'
+implementation 'com.bfu:just-mvp:1.1.8'     // 添加 just-mvp
+implementation 'com.bfu:just-mvp-ktx:1.1.8' // 针对 kotlin 的扩展（可选）
 ```
 ## 开始使用
 > 以用户登录的场景为例  
