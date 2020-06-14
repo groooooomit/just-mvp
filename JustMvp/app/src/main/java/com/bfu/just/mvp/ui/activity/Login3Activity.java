@@ -1,4 +1,4 @@
-package com.bfu.just.mvp.ui.fragment;
+package com.bfu.just.mvp.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,22 +7,22 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bfu.just.mvp.R;
 import com.bfu.just.mvp.core.contract.LoginContract;
 import com.bfu.just.mvp.core.presenter.LoginPresenter;
-import com.bfu.just.mvp.ui.activity.HomeActivity;
 
-import just.mvp.PresenterFragment;
-import just.mvp.widget.LayoutResId;
+import just.mvp.base.Presenters;
 
 /**
- * Fragment 作为 View 的 java demo
+ * Activity 作为 View 的非继承 java demo
  */
-@LayoutResId(R.layout.fragment_login)
-public class Login2Fragment extends PresenterFragment<LoginPresenter> implements LoginContract.View {
+public class Login3Activity extends AppCompatActivity implements LoginContract.View {
+    /* 1. 声明 Presenter. */
+    private LoginContract.Presenter presenter;
+
     private Button btLogin;
     private ProgressBar barLoading;
     private TextView txtUserName;
@@ -30,17 +30,25 @@ public class Login2Fragment extends PresenterFragment<LoginPresenter> implements
     private TextView txtInfo;
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btLogin = view.findViewById(R.id.login);
-        barLoading = view.findViewById(R.id.loading);
-        txtUserName = view.findViewById(R.id.username);
-        txtPassword = view.findViewById(R.id.password);
-        txtInfo = view.findViewById(R.id.txt_info);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        /* 2. View 和 Presenter 绑定. */
+        presenter = Presenters.bind(this, LoginPresenter::new);
+
+        btLogin = findViewById(R.id.login);
+        barLoading = findViewById(R.id.loading);
+        txtUserName = findViewById(R.id.username);
+        txtPassword = findViewById(R.id.password);
+        txtInfo = findViewById(R.id.txt_info);
 
         btLogin.setOnClickListener(v -> {
             final String usernameStr = txtUserName.getText().toString().trim();
             final String passwordStr = txtPassword.getText().toString().trim();
-            getPresenter().login(usernameStr, passwordStr);
+
+            /* 3. Presenter 执行业务逻辑. */
+            presenter.login(usernameStr, passwordStr);
         });
     }
 
@@ -67,8 +75,8 @@ public class Login2Fragment extends PresenterFragment<LoginPresenter> implements
 
     @Override
     public void goHomePage() {
-        /* 作为对照，不传递数据. */
-        startActivity(new Intent(this.getActivity(), HomeActivity.class));
-        this.getActivity().finish();
+        startActivity(new Intent(this, HomeActivity.class));
+        finish();
     }
+
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -57,7 +58,12 @@ public interface AbstractPresenter<V extends IView> extends IPresenter<V>, Prese
     @Nullable
     default ViewModelProvider getActivityViewModelProvider() {
         final V rawView = getRawView();
-        return null != rawView && rawView.isActive() ? new ViewModelProvider(rawView.getActivity(), ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())) : null;
+        if (null != rawView && rawView.isActive()) {
+            final FragmentActivity hostActivity = rawView.getHostActivity();
+            return null != hostActivity ? new ViewModelProvider(hostActivity, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())) : null;
+        } else {
+            return null;
+        }
     }
 
     /**

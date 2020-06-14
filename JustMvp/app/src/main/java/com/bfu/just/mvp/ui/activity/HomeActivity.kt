@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : PresenterActivity<HomePresenter>(), HomeContract.View {
 
+    override fun onCreatePresenter() = HomePresenter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)

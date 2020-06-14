@@ -6,18 +6,18 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import just.mvp.base.BundleData;
 import just.mvp.base.IPresenter;
 import just.mvp.base.IView;
 import just.mvp.base.Presenters;
-import just.mvp.base.ViewData;
 import just.mvp.widget.SimpleFragment;
 
+@SuppressWarnings("rawtypes")
 public abstract class PresenterFragment<P extends IPresenter> extends SimpleFragment implements IView {
+
     /**
-     * 记录 Presenter 的类型
+     * Presenter 引用
      */
-    private final Class<P> presenterType = Presenters.getPresenterType(this.getClass());
+    private P presenter;
 
     /**
      * view 和 presenter 绑定，具体行为是创建 Presenter 并将 Presenter 的生命周期监听器注册给 View；
@@ -31,22 +31,16 @@ public abstract class PresenterFragment<P extends IPresenter> extends SimpleFrag
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        /* view 和 presenter 进行绑定. */
-        Presenters.bind(this, this::onCreatePresenter);
+
+        /* View 和 Presenter 绑定. */
+        //noinspection unchecked
+        presenter = (P) Presenters.bind(this, this::onCreatePresenter);
     }
 
-    /**
-     * 默认实现是进行反射调用
-     */
     @NonNull
     protected P onCreatePresenter() {
-        try {
-            return presenterType.newInstance();
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(String.format("Cannot create an instance of %s", presenterType), e);
-        } catch (java.lang.InstantiationException e) {
-            throw new RuntimeException(String.format("Cannot create an instance of %s", presenterType), e);
-        }
+        /* 默认创建 Presenter 的方式是反射创建，重写此方法自定义 Presenter 创建方法. */
+        return Presenters.newInstance(Presenters.getPresenterType(this.getClass()));
     }
 
     /**
@@ -54,25 +48,10 @@ public abstract class PresenterFragment<P extends IPresenter> extends SimpleFrag
      */
     @NonNull
     protected final P getPresenter() {
-        return Presenters.get(this);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // implements {@link IView}
-    ///////////////////////////////////////////////////////////////////////////
-
-    @NonNull
-    private final BundleData bundleData = new BundleData(PresenterFragment.this::getArguments);
-
-    @NonNull
-    @Override
-    public ViewData getData() {
-        return bundleData;
-    }
-
-    @Override
-    public boolean isActive() {
-        return isAdded() && !isStateSaved();
+        if (null == presenter) {
+            throw new RuntimeException("You should access presenter since onCreate() ");
+        }
+        return presenter;
     }
 
 }

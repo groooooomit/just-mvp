@@ -1,9 +1,11 @@
 package just.mvp.base;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -16,24 +18,35 @@ import androidx.lifecycle.ViewModelStoreOwner;
 public interface IView extends ViewModelStoreOwner, LifecycleOwner {
 
     /**
-     * 获取 View 的 Context 对象
+     * 获取 View 的宿主 Context
      */
-    Context getContext();
+    @Nullable
+    default Context getHostContext() {
+        return Presenters.getHostContextOf(this);
+    }
 
     /**
-     * 获取 view 的 activity
+     * 获取 View 的宿主 Activity
      */
-    FragmentActivity getActivity();
+    @Nullable
+    default FragmentActivity getHostActivity() {
+        return Presenters.getHostActivityOf(this);
+    }
 
     /**
      * 获取当前 View 持有的数据，Activity 的数据来源于 getIntent()，Fragment 的数据来源于 getArguments()
      */
-    ViewData getData();
+    @Nullable
+    default Bundle getArgs() {
+        return Presenters.getArgsOf(this);
+    }
 
     /**
      * 判断 View 是否还可更新
      */
-    boolean isActive();
+    default boolean isActive() {
+        return Presenters.isActiveOf(this);
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // 内置两个常用的弹出消息的方法
@@ -43,7 +56,7 @@ public interface IView extends ViewModelStoreOwner, LifecycleOwner {
      * 显示 toast 消息
      */
     default void toast(@NonNull String msg) {
-        final Context context = getContext();
+        final Context context = getHostContext();
         if (null != context) {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
@@ -53,7 +66,7 @@ public interface IView extends ViewModelStoreOwner, LifecycleOwner {
      * 显示一个长的 toast 消息
      */
     default void toastLong(@NonNull String msg) {
-        final Context context = getContext();
+        final Context context = getHostContext();
         if (null != context) {
             Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         }

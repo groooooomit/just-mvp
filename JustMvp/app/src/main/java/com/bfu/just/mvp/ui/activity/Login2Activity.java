@@ -15,6 +15,9 @@ import com.bfu.just.mvp.core.presenter.LoginPresenter;
 
 import just.mvp.PresenterActivity;
 
+/**
+ * Activity 作为 View 的 java demo
+ */
 public class Login2Activity extends PresenterActivity<LoginPresenter> implements LoginContract.View {
     private Button btLogin;
     private ProgressBar barLoading;
@@ -62,7 +65,7 @@ public class Login2Activity extends PresenterActivity<LoginPresenter> implements
 
     @Override
     public void goHomePage() {
-        startActivity(new Intent(this.getActivity(), HomeActivity.class));
+        startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
 }

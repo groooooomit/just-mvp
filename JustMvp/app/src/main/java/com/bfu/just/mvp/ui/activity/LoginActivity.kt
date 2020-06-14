@@ -3,12 +3,16 @@ package com.bfu.just.mvp.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModel
 import com.bfu.just.mvp.R
 import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.presenter.LoginPresenter
 import just.mvp.PresenterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
+/**
+ * Activity 作为 View 的 kotlin demo
+ */
 class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +45,7 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
     }
 
     override fun goHomePage() {
-        startActivity(Intent(activity, HomeActivity::class.java))
+        startActivity(Intent(this, HomeActivity::class.java))
         finish()
     }
 

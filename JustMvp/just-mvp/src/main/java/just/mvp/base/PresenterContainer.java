@@ -3,22 +3,24 @@ package just.mvp.base;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 以组合的方式使用 ViewModel，而非继承
  * <p>
  * 继承自 {@link AndroidViewModel} 以获得 Application 对象.
  */
+@SuppressWarnings("rawtypes")
 public final class PresenterContainer extends AndroidViewModel {
 
     /**
-     * PresenterContainer 持有的 Presenter 对象
+     * PresenterContainer 持有的 Presenter 对象集合
      */
-    @Nullable
-    private IPresenter presenter;
+    @NonNull
+    private final Map<String, IPresenter> presenterMap = new LinkedHashMap<>(1);
 
     public PresenterContainer(@NonNull Application application) {
         super(application);
@@ -28,10 +30,13 @@ public final class PresenterContainer extends AndroidViewModel {
      * 检查 Presenter 是否存在，如果不存在，那么通过外部传入的 {@link Creator} 创建，并为 Presenter 注入 Application 对象
      */
     @NonNull
-    public final IPresenter preparePresenter(@NonNull Creator creator) {
+    public final <P extends IPresenter> P preparePresenter(@NonNull String key, @NonNull Creator<P> creator) {
+        //noinspection unchecked
+        P presenter = (P) presenterMap.get(key);
         if (null == presenter) {
             presenter = creator.create();
             presenter.initialize(getApplication());
+            presenterMap.put(key, presenter);
         }
         return presenter;
     }
@@ -40,7 +45,9 @@ public final class PresenterContainer extends AndroidViewModel {
      * 获取 Presenter
      */
     @NonNull
-    public final IPresenter requirePresenter() {
+    public final <P extends IPresenter> P requirePresenter(@NonNull String key) {
+        //noinspection unchecked
+        final P presenter = (P) presenterMap.get(key);
         if (null == presenter) {
             throw new RuntimeException("Presenter doesn't prepare or this container already cleared!");
         }
@@ -52,19 +59,20 @@ public final class PresenterContainer extends AndroidViewModel {
      */
     @Override
     protected final void onCleared() {
-        if (null != presenter) {
+        for (IPresenter presenter : presenterMap.values()) {
             presenter.cleared();
-            presenter = null;
         }
+        presenterMap.clear();
     }
 
     /**
      * Presenter 创建器
      */
+    @SuppressWarnings("rawtypes")
     @FunctionalInterface
-    public interface Creator {
+    public interface Creator<P extends IPresenter> {
         @NonNull
-        IPresenter create();
+        P create();
     }
 
 

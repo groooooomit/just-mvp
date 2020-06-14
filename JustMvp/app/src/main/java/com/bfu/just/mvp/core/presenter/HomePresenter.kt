@@ -15,13 +15,12 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
     }
 
     override fun onAttachView(view: HomeContract.View) {
-        /* 获取全局数据. */
         settings.token.observe(view, Observer { view.showToken(it) })
     }
 
     override fun afterViewCreate() {
         /* 获取前一个页面传过来的数据. */
-        val message = view?.data?.getString("arg_message")
+        val message = view?.args?.getString("arg_message")
         view?.toast(message ?: "No message")
     }
 
