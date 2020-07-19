@@ -3,7 +3,7 @@ package just.mvp.ktx
 import androidx.annotation.CallSuper
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-import just.mvp.BasePresenter
+import just.mvp.base.BasePresenter
 import just.mvp.base.IView
 
 /**

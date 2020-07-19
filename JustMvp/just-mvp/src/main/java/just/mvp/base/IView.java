@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelStoreOwner;
 
@@ -15,22 +15,14 @@ import androidx.lifecycle.ViewModelStoreOwner;
  * <p>
  * IView 继承自 {@link ViewModelStoreOwner}，因为在本框架中 Presenter 是由 ViewModel 承载的
  */
-public interface IView extends ViewModelStoreOwner, LifecycleOwner {
+public interface IView extends ViewModelStoreOwner {
 
     /**
-     * 获取 View 的宿主 Context
+     * 获取 View 的 Context
      */
-    @Nullable
+    @NonNull
     default Context getHostContext() {
         return Presenters.getHostContextOf(this);
-    }
-
-    /**
-     * 获取 View 的宿主 Activity
-     */
-    @Nullable
-    default FragmentActivity getHostActivity() {
-        return Presenters.getHostActivityOf(this);
     }
 
     /**
@@ -42,10 +34,18 @@ public interface IView extends ViewModelStoreOwner, LifecycleOwner {
     }
 
     /**
+     * 获取正确的 LifecycleOwner 对象
+     */
+    @NonNull
+    default LifecycleOwner getLifecycleOwner() {
+        return Presenters.getFixedLifecycleOwnerOf(this);
+    }
+
+    /**
      * 判断 View 是否还可更新
      */
     default boolean isActive() {
-        return Presenters.isActiveOf(this);
+        return getLifecycleOwner().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -56,20 +56,14 @@ public interface IView extends ViewModelStoreOwner, LifecycleOwner {
      * 显示 toast 消息
      */
     default void toast(@NonNull String msg) {
-        final Context context = getHostContext();
-        if (null != context) {
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(getHostContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * 显示一个长的 toast 消息
      */
     default void toastLong(@NonNull String msg) {
-        final Context context = getHostContext();
-        if (null != context) {
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-        }
+        Toast.makeText(getHostContext(), msg, Toast.LENGTH_LONG).show();
     }
 
 }

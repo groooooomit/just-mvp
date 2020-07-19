@@ -35,6 +35,11 @@ android {
         jvmTarget = "1.8"
     }
 
+    // 干掉 findViewById
+    buildFeatures {
+        viewBinding true
+    }
+
 }
 
 dependencies {
@@ -52,8 +57,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     /* import just-mvp */
-    implementation 'com.bfu:just-mvp:1.2.0'
-    implementation 'com.bfu:just-mvp-ktx:1.2.0'
+//    implementation 'com.bfu:just-mvp:1.2.0'
+//    implementation 'com.bfu:just-mvp-ktx:1.2.0'
+    implementation project(':just-mvp')
+    implementation project(':just-mvp-ktx')
     implementation 'com.bfu:just-optional:1.0.0'
 
     /* 内存泄漏检查 see https://square.github.io/leakcanary/getting_started/ */
@@ -63,4 +70,12 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
+
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+
+    implementation "androidx.startup:startup-runtime:1.0.0-alpha01"
+
+
+
 }

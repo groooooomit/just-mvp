@@ -19,6 +19,9 @@ import androidx.fragment.app.DialogFragment;
  */
 public class SimpleDialogFragment extends DialogFragment {
 
+    /**
+     * 如果不想使用注解来声明布局也可以重写此方法直接返回布局资源 ID
+     */
     @LayoutRes
     protected int getLayoutResId() {
         final LayoutResId layoutResId = this.getClass().getAnnotation(LayoutResId.class);

@@ -3,7 +3,7 @@ package com.bfu.just.mvp.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
 import com.bfu.just.mvp.R
 import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.presenter.LoginPresenter
@@ -24,10 +24,7 @@ class LoginActivity : PresenterActivity<LoginPresenter>(), LoginContract.View {
             val passwordStr = password.text?.toString()
             presenter.login(usernameStr, passwordStr)
         }
-    }
-
-    override fun showInfo(info: String?) {
-        txt_info.text = info
+        presenter.info.observe(this, Observer { txt_info.text = it })
     }
 
     override fun showLoginStart() {

@@ -17,7 +17,7 @@ data class LoginParam(val username: String?, val password: String?) {
 }
 
 /**
- * 用户 model
+ * 用户 model，对外只提供 RxJava 的 Observable、Single 等组件，或者 LiveData
  */
 class UserModel {
 

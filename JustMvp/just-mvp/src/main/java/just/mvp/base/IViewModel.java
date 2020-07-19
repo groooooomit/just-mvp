@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
  * <p>
  * 因为 {@link androidx.lifecycle.ViewModel} 是一个抽象类，如果直接使用那么必须继承自它，这给 Presenter 带来了不灵活。
  * <p>
- * 这里通过创建一个 {@link PresenterContainer} 的 ViewModel，来存储实现了 {@link IViewModel} 的任何对象，即将抽象类继承变更为接口组合
+ * 这里通过创建一个 {@link IViewModelContainer} 的 ViewModel，来存储实现了 {@link IViewModel} 的任何对象，即将抽象类继承变更为接口组合
  */
 public interface IViewModel {
 

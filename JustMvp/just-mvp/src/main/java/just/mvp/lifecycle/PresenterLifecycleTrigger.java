@@ -1,59 +1,80 @@
 package just.mvp.lifecycle;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+import just.mvp.base.IPresenter;
 import just.mvp.base.IView;
 
 /**
  * Presenter 生命周期触发器
  */
-public class PresenterLifecycleTrigger<V extends IView> extends PresenterLifecycleWrapper<V> implements DefaultLifecycleObserver {
+public class PresenterLifecycleTrigger<V extends IView> {
 
-    public PresenterLifecycleTrigger(@NonNull PresenterLifecycle<V> origin) {
-        super(origin);
+    @NonNull
+    private final IPresenter<V> presenter;
+
+    @NonNull
+    private final PresenterLifecycle<V> presenterLifecycle;
+
+    public PresenterLifecycleTrigger(@NonNull IPresenter<V> presenter, @NonNull PresenterLifecycle<V> presenterLifecycle) {
+        this.presenter = presenter;
+        this.presenterLifecycle = presenterLifecycle;
     }
 
-    @Override
-    public void onAttachView(@NonNull V view) {
-        super.onAttachView(view);
-        view.getLifecycle().addObserver(this);
+    public void performOnInitialize(@NonNull Application application) {
+        presenterLifecycle.onInitialize(application);
     }
 
-    @Override
-    public void onDetachView(@NonNull V view) {
-        view.getLifecycle().removeObserver(this);
-        super.onDetachView(view);
+    public void performOnAttachView(@NonNull V view) {
+        presenterLifecycle.onAttachView(view);
+        view.getLifecycleOwner().getLifecycle().addObserver(observer);
     }
 
-    @Override
-    public void onCreate(@NonNull LifecycleOwner owner) {
-        afterViewCreate();
+    public void performOnDetachView(@NonNull V view) {
+        view.getLifecycleOwner().getLifecycle().removeObserver(observer);
+        presenterLifecycle.onDetachView(view);
     }
 
-    @Override
-    public void onStart(@NonNull LifecycleOwner owner) {
-        afterViewStart();
+    public void performOnCleared() {
+        presenterLifecycle.onCleared();
     }
 
-    @Override
-    public void onResume(@NonNull LifecycleOwner owner) {
-        afterViewResume();
-    }
+    private final DefaultLifecycleObserver observer = new DefaultLifecycleObserver() {
+        @Override
+        public void onCreate(@NonNull LifecycleOwner owner) {
+            presenterLifecycle.afterViewCreate();
+        }
 
-    @Override
-    public void onPause(@NonNull LifecycleOwner owner) {
-        beforeViewPause();
-    }
+        @Override
+        public void onStart(@NonNull LifecycleOwner owner) {
+            presenterLifecycle.afterViewStart();
+        }
 
-    @Override
-    public void onStop(@NonNull LifecycleOwner owner) {
-        beforeViewStop();
-    }
+        @Override
+        public void onResume(@NonNull LifecycleOwner owner) {
+            presenterLifecycle. afterViewResume();
+        }
 
-    @Override
-    public void onDestroy(@NonNull LifecycleOwner owner) {
-        beforeViewDestroy();
-    }
+        @Override
+        public void onPause(@NonNull LifecycleOwner owner) {
+            presenterLifecycle.beforeViewPause();
+        }
+
+        @Override
+        public void onStop(@NonNull LifecycleOwner owner) {
+            presenterLifecycle.beforeViewStop();
+        }
+
+        @Override
+        public void onDestroy(@NonNull LifecycleOwner owner) {
+            presenterLifecycle.beforeViewDestroy();
+            /* View destroy 时 presenter 释放解除对它的引用. */
+            presenter.detachView();
+        }
+    };
+
 }

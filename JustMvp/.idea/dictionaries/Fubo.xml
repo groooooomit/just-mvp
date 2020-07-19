@@ -2,8 +2,10 @@
   <dictionary name="Fubo">
     <words>
       <w>abcdefg</w>
+      <w>datas</w>
       <w>logining</w>
       <w>rxjava</w>
+      <w>snackbar</w>
     </words>
   </dictionary>
 </component>

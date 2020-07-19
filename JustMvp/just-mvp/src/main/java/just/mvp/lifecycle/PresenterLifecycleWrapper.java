@@ -1,5 +1,7 @@
 package just.mvp.lifecycle;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 
 import just.mvp.base.IView;
@@ -14,8 +16,8 @@ public class PresenterLifecycleWrapper<V extends IView> implements PresenterLife
     }
 
     @Override
-    public void onInitialize() {
-        origin.onInitialize();
+    public void onInitialize(@NonNull Application application) {
+        origin.onInitialize(application);
     }
 
     @Override

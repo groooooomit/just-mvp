@@ -1,10 +1,15 @@
 package just.mvp.lifecycle;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 
 import just.mvp.base.IView;
 
 /**
+ * @deprecated 通过 Lifecycle 监听 Fragment 生命周期时，使用 {@link androidx.fragment.app.Fragment#getViewLifecycleOwner()} 获取 Lifecycle 就不会出现下述的生命周期问题了
+ * <p> 原文：
+ * <p>
  * 修正 presenter 生命周期方法调用顺序
  * <p>
  * lifeCycleOwner、viewModel、Activity/Fragment 销毁时生命周期：
@@ -38,6 +43,7 @@ import just.mvp.base.IView;
  * <pre/>
  * @param <V> View
  */
+@Deprecated
 public class PresenterLifecycleOrderFixWrapper<V extends IView> extends PresenterLifecycleWrapper<V> {
 
     /**
@@ -55,10 +61,10 @@ public class PresenterLifecycleOrderFixWrapper<V extends IView> extends Presente
     }
 
     @Override
-    public void onInitialize() {
+    public void onInitialize(@NonNull Application application) {
         /* onInitialize() 执行后需要对应执行 onCleared(). */
         isOnClearedCalled = false;
-        super.onInitialize();
+        super.onInitialize(application);
     }
 
     @Override

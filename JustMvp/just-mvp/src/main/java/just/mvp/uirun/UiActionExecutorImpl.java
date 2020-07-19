@@ -43,6 +43,11 @@ public class UiActionExecutorImpl<V extends IView> implements UiActionExecutor<V
     }
 
     @Override
+    public void runOnUi(@NonNull Runnable action) {
+
+    }
+
+    @Override
     public final void runOnUi(long delay, @NonNull ViewRunnable<V> action) {
         uiHandler.postDelayed(() -> runIfViewActive(action), delay);
     }

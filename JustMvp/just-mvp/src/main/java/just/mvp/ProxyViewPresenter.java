@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import just.mvp.base.BasePresenter;
 import just.mvp.base.IView;
 
 /**
@@ -22,10 +23,9 @@ import just.mvp.base.IView;
  * 3、如果代理 View 对象调用返回类型为基本数据类型的方法，因为已经处于非 active 状态，原始 View 对应的方法行为不会被执行，将直接返回基本数据类型的默认值 {@link ProxyViewPresenter#PRIMITIVE_DEFAULT_VALUE}；
  * 4、如果代理 View 对象调用返回类型为对象数据类型的方法，因为已经处于非 active 状态，原始 View 对应的方法行为不会被执行，将直接返回 null，对此要做好非空检查；
  * <pre/>
- * @deprecated 动态代理有性能影响，另外如果 Presenter 中出现较多的上述第 4 种对 View 的使用场景，容易因为疏忽造成空指针异常。如果不考虑这两个缺点，那么使用它也是 OK 的
+ * 动态代理有性能影响，另外如果 Presenter 中出现较多的上述第 4 种对 View 的使用场景，容易因为疏忽造成空指针异常。如果不考虑这两个缺点，那么使用它也是 OK 的
  * @param <V>
  */
-@Deprecated
 public class ProxyViewPresenter<V extends IView> extends BasePresenter<V> {
 
     /**
@@ -63,7 +63,6 @@ public class ProxyViewPresenter<V extends IView> extends BasePresenter<V> {
      * ProxyView 会在 onDetachView 回调时清除自己持有的原始 View 的引用，以避免造成 View 的内存泄漏的出现
      */
     @NonNull
-    @Override
     public V getView() {
         if (null == proxyView) {
             throw new RuntimeException("You should getView since onAttachView()");
@@ -80,7 +79,7 @@ public class ProxyViewPresenter<V extends IView> extends BasePresenter<V> {
      */
     // @formatter:off
     @NonNull
-    private static final Map<Class, Object> PRIMITIVE_DEFAULT_VALUE = new HashMap<Class, Object>() {{
+    private static final Map<Class<?>, Object> PRIMITIVE_DEFAULT_VALUE = new HashMap<Class<?>, Object>() {{
         put(byte.class,     (byte)  0);
         put(short.class,    (short) 0);
         put(char.class,     (char)  0);

@@ -1,15 +1,14 @@
 package just.mvp.base;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.lang.reflect.ParameterizedType;
@@ -28,16 +27,10 @@ public final class Presenters {
     }
 
     /**
-     * 默认的 Presenter key
-     */
-    public static final String KEY_DEFAULT_PRESENTER = "default-presenter";
-
-    /**
      * 获取 Presenter 的具体类型
      */
-    @SuppressWarnings("rawtypes")
     @NonNull
-    public static <P extends IPresenter> Class<P> getPresenterType(@NonNull Class<?> viewClass) {
+    public static <P extends IPresenter<?>> Class<P> getPresenterType(@NonNull Class<? extends IView> viewClass) {
         //noinspection unchecked
         return (Class<P>) ((ParameterizedType) (Objects.requireNonNull(viewClass.getGenericSuperclass()))).getActualTypeArguments()[0];
     }
@@ -45,9 +38,8 @@ public final class Presenters {
     /**
      * 反射创建 Presenter 的实例
      */
-    @SuppressWarnings("rawtypes")
     @NonNull
-    public static <P extends IPresenter> P newInstance(@NonNull Class<P> presenterClass) {
+    public static <P extends IPresenter<?>> P newInstance(@NonNull Class<P> presenterClass) {
         try {
             return presenterClass.newInstance();
         } catch (IllegalAccessException e) {
@@ -57,24 +49,27 @@ public final class Presenters {
         }
     }
 
-    /**
-     * 使用默认 key
-     */
     @NonNull
-    public static <V extends IView, P extends IPresenter<V>> P bind(@NonNull V view, @NonNull PresenterContainer.Creator<P> creator) {
-        return bind(view, Presenters.KEY_DEFAULT_PRESENTER, creator);
+    public static <V extends IView, P extends IPresenter<V>> P bind(@NonNull V view, @NonNull Class<P> presenterClass) {
+        return bind(view, presenterClass, () -> Presenters.newInstance(presenterClass));
     }
+
+    /**
+     * ViewModel key 前缀
+     */
+    private static final String KEY_PREFIX = "just-mvp-IViewModelContainer:";
 
     /**
      * 绑定 View 和 Presenter，如果 Presenter 已存在，那么直接返回，否则通过 Creator 进行创建
      *
-     * @param view    View
-     * @param key     在 PresenterContainer 中索引 presenter 的 key
-     * @param creator 创建器
+     * @param view           View
+     * @param presenterClass 在 Presenter 的 Class 类型
+     * @param creator        创建器
      */
     @NonNull
-    public static <V extends IView, P extends IPresenter<V>> P bind(@NonNull V view, @NonNull String key, @NonNull PresenterContainer.Creator<P> creator) {
-        final P presenter = of(view).get(PresenterContainer.class).preparePresenter(key, creator);
+    public static <V extends IView, P extends IPresenter<V>> P bind(@NonNull V view, @NonNull Class<P> presenterClass, @NonNull IViewModelContainer.Creator<P> creator) {
+        final String key = KEY_PREFIX + Objects.requireNonNull(presenterClass.getCanonicalName());
+        final P presenter = new ViewModelProvider(view).get(key, IViewModelContainer.class).prepare(creator);
         presenter.attachView(view);
         return presenter;
     }
@@ -86,76 +81,33 @@ public final class Presenters {
      * @return 绑定到 View 的 Presenter 实例
      */
     @NonNull
-    public static <V extends IView, P extends IPresenter<V>> P get(@NonNull V view, @NonNull String key) {
-        return of(view).get(PresenterContainer.class).requirePresenter(key);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    @NonNull
-    private static Application checkApplication(@NonNull Activity activity) {
-        final Application application = activity.getApplication();
-        if (application == null) {
-            throw new IllegalStateException("Your activity is not yet attached to Application. You can't request ViewModel before onCreate call.");
-        }
-        return application;
-    }
-
-    @NonNull
-    private static Activity checkActivity(@NonNull IView view) {
-        final Activity activity = view.getHostActivity();
-        if (activity == null) {
-            throw new IllegalStateException("Can't create ViewModelProvider for detached view");
-        }
-        return activity;
-    }
-
-    /**
-     * 创建 ViewModelProvider 对象
-     */
-    @NonNull
-    private static ViewModelProvider of(@NonNull IView view) {
-        final Application application = checkApplication(checkActivity(view));
-        final ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application);
-        return new ViewModelProvider(view, factory);
+    public static <V extends IView, P extends IPresenter<V>> P get(@NonNull V view, @NonNull Class<P> presenterClass) {
+        final String key = KEY_PREFIX + Objects.requireNonNull(presenterClass.getCanonicalName());
+        return new ViewModelProvider(view).get(key, IViewModelContainer.class).require();
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * 获取 View 的宿主 context
+     * 获取 View 的 context
      */
-    @Nullable
+    @NonNull
     public static Context getHostContextOf(@NonNull IView view) {
-        if (view instanceof Activity) {
+        if (view instanceof FragmentActivity) {
             return (Context) view;
         } else if (view instanceof Fragment) {
-            return ((Fragment) view).getContext();
+            return ((Fragment) view).requireContext();
         } else {
             throw new UnsupportedOperationException("Type of " + view.getClass().getName() + " is unsupported.");
         }
     }
 
     /**
-     * 获取 View 的宿主 activity
-     */
-    @Nullable
-    public static FragmentActivity getHostActivityOf(@NonNull IView view) {
-        if (view instanceof FragmentActivity) {
-            return (FragmentActivity) view;
-        } else if (view instanceof Fragment) {
-            return ((Fragment) view).getActivity();
-        } else {
-            throw new UnsupportedOperationException("Type of " + view.getClass().getName() + " is unsupported.");
-        }
-    }
-
-    /**
-     * 获取 View 持有的界面参数
+     * 获取 View 持有的界面参数，Activity 的数据来源于 getIntent()，Fragment 的数据来源于 getArguments()
      */
     @Nullable
     public static Bundle getArgsOf(@NonNull IView view) {
-        if (view instanceof Activity) {
+        if (view instanceof FragmentActivity) {
             return ((Activity) view).getIntent().getExtras();
         } else if (view instanceof Fragment) {
             return ((Fragment) view).getArguments();
@@ -165,37 +117,17 @@ public final class Presenters {
     }
 
     /**
-     * 判断 View 是否 active
+     * 获取正确的 LifecycleOwner 对象
      */
-    public static boolean isActiveOf(@NonNull IView view) {
-        if (view instanceof Activity) {
-            return isActivityActive((Activity) view);
+    @NonNull
+    public static LifecycleOwner getFixedLifecycleOwnerOf(IView view) {
+        if (view instanceof FragmentActivity) {
+            return (FragmentActivity) view;
         } else if (view instanceof Fragment) {
-            return isFragmentActive((Fragment) view);
+            /* Google 填坑：Fragment 要通过 getViewLifecycleOwner() 来获取正确的 LifecycleOwner. https://medium.com/@cs.ibrahimyilmaz/viewlifecycleowner-vs-this-a8259800367b */
+            return ((Fragment) view).getViewLifecycleOwner();
         } else {
             throw new UnsupportedOperationException("Type of " + view.getClass().getName() + " is unsupported.");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * 判断 Activity 是否 active
-     */
-    private static boolean isActivityActive(@NonNull Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return !activity.isFinishing() && !activity.isDestroyed();
-        } else {
-            return !activity.isFinishing();
-        }
-    }
-
-    /**
-     * 判断 Fragment 是否 active
-     */
-    private static boolean isFragmentActive(@NonNull Fragment fragment) {
-        return fragment.isAdded() && !fragment.isStateSaved();
-    }
-
-
 }

@@ -1,5 +1,6 @@
 package com.bfu.just.mvp.core.presenter
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.bfu.just.mvp.app.App
 import com.bfu.just.mvp.app.Settings
@@ -8,11 +9,17 @@ import com.bfu.just.mvp.core.model.UserModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import just.mvp.ext.livedata.EventObserver
+import just.mvp.ext.livedata.MutableEventLiveData
+import just.mvp.ext.livedata.MutableSignalLiveData
+import just.mvp.ext.livedata.SignalObserver
 import just.mvp.ktx.RxPresenter
-import just.mvp.ktx.observeBy
+import just.mvp.ktx.observeData
 
 /**
  *  [LoginPresenter] 的 LiveData 版本
+ *  TODO 1、presenter 增加协程支持 viewScope presenterScope
+ *  TODO 2、修改插件生成的模板代码，a、presenter 添加 onInitialize 和 onAttachView
  */
 class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presenter {
 
@@ -29,21 +36,33 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
     /**
      * 用于记录并更新界面提示信息
      */
-    private val info = MutableLiveData<String>()
+    override val info = MutableLiveData<String>()
+
+    /**
+     * 发送界面跳转信号，演示 SignalLiveData 的使用
+     */
+    private val goHomePageSignal = MutableSignalLiveData()
+
+    /**
+     * 发送 toast，演示 EventLiveData 的使用
+     */
+    private val toastEvent = MutableEventLiveData<String>()
 
     /**
      * 全局属性
      */
     private lateinit var settings: Settings
 
-    override fun onInitialize() {
+    override fun onInitialize(application: Application) {
         settings = (application as App).settings
     }
 
     override fun onAttachView(view: LoginContract.View) {
         // liveData 安全及时地更新 view
-        isLogining.observeBy(view) { if (it) view.showLoginStart() else view.showLoginEnd() }
-        info.observeBy(view) { view.showInfo(it) }
+        isLogining.observeData(view.lifecycleOwner) { if (it) view.showLoginStart() else view.showLoginEnd() }
+        goHomePageSignal.observe(view.lifecycleOwner, SignalObserver { view.goHomePage() })
+        toastEvent.observe(view.lifecycleOwner, EventObserver { view.toast(it) })
+        activeView?.showLoginStart()
     }
 
     override fun login(username: String?, password: String?) {
@@ -60,9 +79,11 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
                 .subscribeBy(
                     onSuccess = {
                         info.value = "登录成功"
-                        view?.goHomePage()
+                        toastEvent.send("登录成功")
+                        goHomePageSignal.send()
                     },
                     onError = { error ->
+                        toastEvent.send("登录异常")
                         info.value = "登录异常：${error.message ?: "Unknown"}"
                     }
                 ).disposeWhenCleared()

@@ -17,5 +17,5 @@ public @interface LayoutResId {
      * 布局资源 ID
      */
     @LayoutRes
-    int value() default 0;
+    int value();
 }

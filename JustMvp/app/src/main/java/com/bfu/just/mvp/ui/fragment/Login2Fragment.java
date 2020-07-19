@@ -31,6 +31,7 @@ public class Login2Fragment extends PresenterFragment<LoginPresenter> implements
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         btLogin = view.findViewById(R.id.login);
         barLoading = view.findViewById(R.id.loading);
         txtUserName = view.findViewById(R.id.username);
@@ -42,11 +43,7 @@ public class Login2Fragment extends PresenterFragment<LoginPresenter> implements
             final String passwordStr = txtPassword.getText().toString().trim();
             getPresenter().login(usernameStr, passwordStr);
         });
-    }
-
-    @Override
-    public void showInfo(@Nullable String info) {
-        txtInfo.setText(info);
+        getPresenter().getInfo().observe(getViewLifecycleOwner(), info -> txtInfo.setText(info));
     }
 
     @Override

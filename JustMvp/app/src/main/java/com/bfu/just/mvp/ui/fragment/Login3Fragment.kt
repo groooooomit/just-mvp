@@ -10,7 +10,9 @@ import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.presenter.HomePresenter
 import com.bfu.just.mvp.core.presenter.LoginPresenter
 import com.bfu.just.mvp.ui.activity.HomeActivity
+import just.mvp.base.Presenters
 import just.mvp.ktx.bind
+import just.mvp.ktx.observeData
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
@@ -23,6 +25,11 @@ class Login3Fragment : Fragment(R.layout.fragment_login), LoginContract.View, Ho
     private lateinit var homePresenter: HomeContract.Presenter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        /* 2. View 和 Presenter 绑定. */
+        loginPresenter = Presenters.bind(this, LoginPresenter::class.java) { LoginPresenter() }
+        loginPresenter = bind { LoginPresenter() }
+        homePresenter = bind { HomePresenter() }
+
         view.isClickable = true
         login.setOnClickListener {
 
@@ -33,18 +40,7 @@ class Login3Fragment : Fragment(R.layout.fragment_login), LoginContract.View, Ho
             /* 3. Presenter 执行业务逻辑. */
             loginPresenter.login(usernameStr, passwordStr)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        /* 2. View 和 Presenter 绑定. */
-        loginPresenter = bind("login-presenter") { LoginPresenter() }
-        homePresenter = bind("home-presenter") { HomePresenter() }
-    }
-
-    override fun showInfo(info: String?) {
-        txt_info.text = info
+        loginPresenter.info.observeData(this) { txt_info.text = it }
     }
 
     override fun showLoginStart() {

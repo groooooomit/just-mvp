@@ -3,15 +3,12 @@ package com.bfu.just.mvp.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.bfu.just.mvp.R;
 import com.bfu.just.mvp.core.contract.LoginContract;
 import com.bfu.just.mvp.core.presenter.LoginPresenter;
+import com.bfu.just.mvp.databinding.ActivityLoginBinding;
 
 import just.mvp.PresenterActivity;
 
@@ -19,48 +16,35 @@ import just.mvp.PresenterActivity;
  * Activity 作为 View 的 java demo
  */
 public class Login2Activity extends PresenterActivity<LoginPresenter> implements LoginContract.View {
-    private Button btLogin;
-    private ProgressBar barLoading;
-    private TextView txtUserName;
-    private TextView txtPassword;
-    private TextView txtInfo;
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        btLogin = findViewById(R.id.login);
-        barLoading = findViewById(R.id.loading);
-        txtUserName = findViewById(R.id.username);
-        txtPassword = findViewById(R.id.password);
-        txtInfo = findViewById(R.id.txt_info);
-
-        btLogin.setOnClickListener(v -> {
-            final String usernameStr = txtUserName.getText().toString().trim();
-            final String passwordStr = txtPassword.getText().toString().trim();
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        binding.login.setOnClickListener(v -> {
+            final String usernameStr = binding.username.getText().toString().trim();
+            final String passwordStr = binding.password.getText().toString().trim();
             getPresenter().login(usernameStr, passwordStr);
         });
-    }
-
-    @Override
-    public void showInfo(@Nullable String info) {
-        txtInfo.setText(info);
+        getPresenter().getInfo().observe(this, binding.txtInfo::setText);
     }
 
     @Override
     public void showLoginStart() {
-        barLoading.setVisibility(View.VISIBLE);
-        txtUserName.setEnabled(false);
-        txtPassword.setEnabled(false);
-        btLogin.setEnabled(false);
+        binding.loading.setVisibility(View.VISIBLE);
+        binding.username.setEnabled(false);
+        binding.password.setEnabled(false);
+        binding.login.setEnabled(false);
     }
 
     @Override
     public void showLoginEnd() {
-        barLoading.setVisibility(View.GONE);
-        txtUserName.setEnabled(true);
-        txtPassword.setEnabled(true);
-        btLogin.setEnabled(true);
+        binding.loading.setVisibility(View.GONE);
+        binding.username.setEnabled(true);
+        binding.password.setEnabled(true);
+        binding.login.setEnabled(true);
     }
 
     @Override

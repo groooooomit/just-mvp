@@ -4,6 +4,5 @@ import just.mvp.base.IPresenter
 import just.mvp.base.IView
 import just.mvp.base.Presenters
 
-fun <V : IView, P : IPresenter<V>> V.bind(creator: () -> P): P = Presenters.bind(this, creator)
-
-fun <V : IView, P : IPresenter<V>> V.bind(key: String, creator: () -> P): P = Presenters.bind(this, key, creator)
+inline fun <V : IView, reified P : IPresenter<V>> V.bind(noinline creator: () -> P): P =
+    Presenters.bind(this, P::class.java, creator)

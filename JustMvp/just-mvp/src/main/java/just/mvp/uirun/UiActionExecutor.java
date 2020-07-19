@@ -19,6 +19,8 @@ public interface UiActionExecutor<V extends IView> {
      */
     void runOnUi(@NonNull ViewRunnable<V> action);
 
+    void runOnUi(@NonNull Runnable action);
+
     /**
      * 在 UI 线程延时执行，且 View 处于 active 状态
      */
