@@ -14,11 +14,13 @@ import androidx.lifecycle.Observer;
 public abstract class EventLiveData<T> extends LiveData<Event<T>> {
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull EventObserver<T> observer) {
-        super.observe(owner, new OnceObserver<>(observer));
-    }
-
-    public void observe(@NonNull Fragment fragment, @NonNull EventObserver<T> observer) {
-        super.observe(fragment.getViewLifecycleOwner(), new OnceObserver<>(observer));
+        if (owner instanceof Fragment) {
+            /* Google 填坑：Fragment 要通过 getViewLifecycleOwner() 来获取正确的 LifecycleOwner. https://medium.com/@cs.ibrahimyilmaz/viewlifecycleowner-vs-this-a8259800367b */
+            final Fragment fragment = (Fragment) owner;
+            super.observe(fragment.getViewLifecycleOwner(), new OnceObserver<>(observer));
+        } else {
+            super.observe(owner, new OnceObserver<>(observer));
+        }
     }
 
     /**

@@ -12,11 +12,13 @@ import androidx.lifecycle.Observer;
 public abstract class SignalLiveData extends LiveData<Signal> {
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull SignalObserver observer) {
-        super.observe(owner, new OnceObserver<>(observer));
-    }
-
-    public void observe(@NonNull Fragment fragment, @NonNull SignalObserver observer) {
-        super.observe(fragment.getViewLifecycleOwner(), new OnceObserver<>(observer));
+        if (owner instanceof Fragment) {
+            /* Google 填坑：Fragment 要通过 getViewLifecycleOwner() 来获取正确的 LifecycleOwner. https://medium.com/@cs.ibrahimyilmaz/viewlifecycleowner-vs-this-a8259800367b */
+            final Fragment fragment = (Fragment) owner;
+            super.observe(fragment.getViewLifecycleOwner(), new OnceObserver<>(observer));
+        } else {
+            super.observe(owner, new OnceObserver<>(observer));
+        }
     }
 
     /**
