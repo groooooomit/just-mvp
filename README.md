@@ -84,7 +84,7 @@ class Login3Fragment : Fragment(R.layout.fragment_login), LoginContract.View {
 :warning: 不要在 View 的 onDestroy 方法中访问 Presenter。Presenter 由 ViewModel 承载，onDestroy 回调前 ViewModel 已经被回收了，应该将逻辑转移到 Presenter 的 **beforeViewDestroy** 中；
 
 ## 一键生成模板代码
-> 本框架专属神器 **[Just Mvp Generator](https://github.com/groooooomit/just-mvp-plugin)** ，可以一键生成繁琐的 Contract、Presenter、Activity/Fragment 样板代码以及布局文件，点击链接查看插件详情。  
+> 本框架专属神器 **[Just Mvp Generator](https://github.com/groooooomit/just-mvp-plugin)** ，可以一键生成繁琐的 Contract、Presenter、Activity/Fragment 样板代码以及布局文件，[戳这里](https://github.com/groooooomit/just-mvp-plugin)查看插件详情。  
 
 ![Just Mvp Generator](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/just-mvp-generator-plugin.png "Just Mvp Generator")    
 
@@ -101,8 +101,8 @@ class Login3Fragment : Fragment(R.layout.fragment_login), LoginContract.View {
 ## [BasePresenter](https://github.com/groooooomit/just-mvp/blob/master/JustMvp/just-mvp/src/main/java/just/mvp/BasePresenter.java) 生命周期
 * presenter 生命周期一共 10 个方法：onInitialize -> onAttachView -> afterViewCreate -> afterViewStart -> afterViewResume -> beforeViewPause -> beforeViewStop -> beforeViewDestroy -> onDetachView -> onCleared；  
 * onInitialize 和 onCleared 对应 ViewModel 的生命周期；  
-* onAttachView 和 onDetachView 在 presenter 持有和解除对 view 的引用时触发；  
-* afterViewCreate ... beforeViewDestroy 分別对应 view 的生命周期。  
+* onAttachView 和 onDetachView 在 presenter 持有和解除对 view 的引用时触发，可以在 onAttachView 生命周期方法中配置 [LiveData](https://developer.android.google.cn/topic/libraries/architecture/livedata) 对 View 的更新；  
+* afterViewCreate ... beforeViewDestroy 分別对应 view 的生命周期，如果结合使用 [LiveData](https://developer.android.google.cn/topic/libraries/architecture/livedata) 来更新 View，可以不需要关心这几个 View 的生命周期方法。  
 * 打开和关闭一个 view 时，绑定了 view 的 presenter 生命周期执行流程：  
 
     ![打开和关闭 view 时 presenter 的生命周期流程](https://raw.githubusercontent.com/groooooomit/just-mvp/master/screenshots/open_close_page.gif "打开和关闭 view 时 presenter 的生命周期流程")  
