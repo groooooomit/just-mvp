@@ -57,7 +57,7 @@ public class PresenterLifecycleTrigger<V extends IView> {
 
         @Override
         public void onResume(@NonNull LifecycleOwner owner) {
-            presenterLifecycle. afterViewResume();
+            presenterLifecycle.afterViewResume();
         }
 
         @Override

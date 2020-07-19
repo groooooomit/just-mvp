@@ -59,9 +59,9 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
 
     override fun onAttachView(view: LoginContract.View) {
         // liveData 安全及时地更新 view
-        isLogining.observeData(view.lifecycleOwner) { if (it) view.showLoginStart() else view.showLoginEnd() }
-        goHomePageSignal.observe(view.lifecycleOwner, SignalObserver { view.goHomePage() })
-        toastEvent.observe(view.lifecycleOwner, EventObserver { view.toast(it) })
+        isLogining.observeData(view) { if (it) view.showLoginStart() else view.showLoginEnd() }
+        goHomePageSignal.observe(view, SignalObserver { view.goHomePage() })
+        toastEvent.observe(view, EventObserver { view.toast(it) })
         activeView?.showLoginStart()
     }
 
