@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
  * <p>
  * IView 继承自 {@link ViewModelStoreOwner}，因为在本框架中 Presenter 是由 ViewModel 承载的
  */
-public interface IView extends ViewModelStoreOwner {
+public interface IView extends ViewModelStoreOwner, LifecycleOwner {
 
     /**
      * 获取 View 的 Context
@@ -34,18 +34,10 @@ public interface IView extends ViewModelStoreOwner {
     }
 
     /**
-     * 获取正确的 LifecycleOwner 对象
-     */
-    @NonNull
-    default LifecycleOwner getLifecycleOwner() {
-        return Presenters.getFixedLifecycleOwnerOf(this);
-    }
-
-    /**
      * 判断 View 是否还可更新
      */
     default boolean isActive() {
-        return getLifecycleOwner().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
+        return Presenters.getFixedLifecycleOwnerOf(this).getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
     }
 
     ///////////////////////////////////////////////////////////////////////////

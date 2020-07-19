@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner;
 
 import just.mvp.base.IPresenter;
 import just.mvp.base.IView;
+import just.mvp.base.Presenters;
 
 /**
  * Presenter 生命周期触发器
@@ -31,11 +32,11 @@ public class PresenterLifecycleTrigger<V extends IView> {
 
     public void performOnAttachView(@NonNull V view) {
         presenterLifecycle.onAttachView(view);
-        view.getLifecycleOwner().getLifecycle().addObserver(observer);
+        Presenters.getFixedLifecycleOwnerOf(view).getLifecycle().addObserver(observer);
     }
 
     public void performOnDetachView(@NonNull V view) {
-        view.getLifecycleOwner().getLifecycle().removeObserver(observer);
+        Presenters.getFixedLifecycleOwnerOf(view).getLifecycle().removeObserver(observer);
         presenterLifecycle.onDetachView(view);
     }
 

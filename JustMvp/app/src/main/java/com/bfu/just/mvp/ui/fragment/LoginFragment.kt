@@ -8,7 +8,6 @@ import com.bfu.just.mvp.core.contract.LoginContract
 import com.bfu.just.mvp.core.presenter.LoginPresenter
 import com.bfu.just.mvp.ui.activity.HomeActivity
 import just.mvp.PresenterFragment
-import just.mvp.ktx.observeBy
 import just.mvp.widget.LayoutResId
 import kotlinx.android.synthetic.main.activity_login.*
 
