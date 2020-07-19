@@ -41,7 +41,7 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
     /**
      * 发送界面跳转信号，演示 SignalLiveData 的使用
      */
-    private val goHomePageSignal = MutableSignalLiveData()
+    private val navigateHomePageSignal = MutableSignalLiveData()
 
     /**
      * 发送 toast，演示 EventLiveData 的使用
@@ -60,7 +60,7 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
     override fun onAttachView(view: LoginContract.View) {
         // liveData 安全及时地更新 view
         isLogining.observeData(view) { if (it) view.showLoginStart() else view.showLoginEnd() }
-        goHomePageSignal.observe(view, SignalObserver { view.goHomePage() })
+        navigateHomePageSignal.observe(view, SignalObserver { view.goHomePage() })
         toastEvent.observe(view, EventObserver { view.toast(it) })
         activeView?.showLoginStart()
     }
@@ -80,7 +80,7 @@ class LoginPresenter : RxPresenter<LoginContract.View>(), LoginContract.Presente
                     onSuccess = {
                         info.value = "登录成功"
                         toastEvent.send("登录成功")
-                        goHomePageSignal.send()
+                        navigateHomePageSignal.send()
                     },
                     onError = { error ->
                         toastEvent.send("登录异常")
