@@ -47,9 +47,11 @@ public abstract class PresenterActivity<P extends IPresenter> extends AppCompatA
         presenter = (P) Presenters.bind(this, presenterClass, this::onCreatePresenter);
     }
 
+    /**
+     * 默认创建 Presenter 的方式是反射创建，重写此方法自定义 Presenter 创建方法.
+     */
     @NonNull
     protected P onCreatePresenter() {
-        /* 默认创建 Presenter 的方式是反射创建，重写此方法自定义 Presenter 创建方法. */
         return Presenters.newInstance(presenterClass);
     }
 
